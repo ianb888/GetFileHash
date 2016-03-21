@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GetFileHash
@@ -82,9 +76,6 @@ namespace GetFileHash
             sha1TextBox.Text = checksumSha1;
             string checksumSha256 = GetHashFromFile(fileNamePath, Algorithms.SHA256);
             sha256TextBox.Text = checksumSha256;
-            //string checksumSha384 = GetHashFromFile(fileNamePath, Algorithms.SHA384);
-            //string checksumSha512 = GetHashFromFile(fileNamePath, Algorithms.SHA512);
-            //string checksumRipemd160 = GetHashFromFile(fileNamePath, Algorithms.RIPEMD160);
         }
     }
 }
