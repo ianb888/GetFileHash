@@ -3,14 +3,43 @@ using System.ComponentModel;
 using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using Microsoft.Win32;
+using VirusTotalNET;
+using VirusTotalNET.Objects;
 
 namespace GetFileHash
 {
     public partial class Form1 : Form
     {
+        private const string ScanUrl = "http://www.google.com/";
+        VirusTotal virusTotal;
+
         public Form1()
         {
             InitializeComponent();
+
+            try
+            {
+                RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
+                regKey.CreateSubKey("VirusTotal");
+                regKey = regKey.OpenSubKey("VirusTotal", true);
+                var apiKey = regKey.GetValue("APIkey");
+                if (apiKey == null)
+                {
+                    MessageBox.Show("You need to obtain your API key from VirusTotal and save it in the registry as HKCU/Software/VirusTotal/APIkey", "Missing API Key", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    VirusTotalButton.Enabled = false;
+                }
+                else
+                {
+                    string vtApiKey = apiKey.ToString();
+                    virusTotal = new VirusTotal(vtApiKey);
+                    virusTotal.UseTLS = true;
+                }
+            }
+            catch (Exception eX)
+            {
+                MessageBox.Show(eX.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
@@ -76,6 +105,41 @@ namespace GetFileHash
             sha1TextBox.Text = checksumSha1;
             string checksumSha256 = GetHashFromFile(fileNamePath, Algorithms.SHA256);
             sha256TextBox.Text = checksumSha256;
+        }
+
+        private void VirusTotalButton_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(filePathBox.Text))
+            {
+                FileInfo fileInfo = new FileInfo(filePathBox.Text);
+
+                // Check if the file has been scanned previously
+                FileReport fileReport = virusTotal.GetFileReport(fileInfo);
+                bool hasBeenScannedBefore = fileReport.ResponseCode == ReportResponseCode.Present;
+
+                // If the file has already been scanned, then the results are embedded inside of the report
+                if (hasBeenScannedBefore)
+                {
+                    vtMessageTextBox.Text = string.Format("{0}, Detection Score = {1}/{2}", fileReport.VerboseMsg, fileReport.Positives, fileReport.Total);
+                    if (fileReport.Positives > fileReport.Total / 2)
+                    {
+                        trafficLight.Image = Properties.Resources.traffic_red;
+                    }
+                    else if (fileReport.Positives > 0)
+                    {
+                        trafficLight.Image = Properties.Resources.traffic_yellow;
+                    }
+                    else
+                    {
+                        trafficLight.Image = Properties.Resources.traffic_green;
+                    }
+                }
+                else
+                {
+                    ScanResult scanResult = virusTotal.ScanFile(fileInfo);
+                    vtMessageTextBox.Text = scanResult.VerboseMsg;
+                }
+            }
         }
     }
 }
