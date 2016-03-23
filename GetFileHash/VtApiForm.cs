@@ -1,11 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Security.Cryptography;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using VirusTotalNET;
-using VirusTotalNET.Objects;
 
 namespace GetFileHash
 {
