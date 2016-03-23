@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFileHash", "GetFileHash\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowVersion", "ShowVersion\ShowVersion.csproj", "{83232A90-846C-45B2-93B1-CEE29BC19908}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirusTotal.NET", "..\..\..\..\Source\Repos\VirusTotal.NET\VirusTotal.NET\VirusTotal.NET.csproj", "{F171FB32-C071-4A38-BA05-61DD8B73723A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirusTotal.NET", "..\VirusTotal.NET\VirusTotal.NET\VirusTotal.NET.csproj", "{F171FB32-C071-4A38-BA05-61DD8B73723A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

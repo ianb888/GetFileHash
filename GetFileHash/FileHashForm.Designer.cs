@@ -1,6 +1,6 @@
 ﻿namespace GetFileHash
 {
-    partial class Form1
+    partial class FileHashForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileHashForm));
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.chooseFileButton = new System.Windows.Forms.Button();
             this.filePathBox = new System.Windows.Forms.TextBox();
@@ -48,6 +48,7 @@
             this.vtMessageTextBox = new System.Windows.Forms.TextBox();
             this.trafficLight = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.trafficLightTimer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.copyMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -102,8 +103,10 @@
             this.sha256TextBox.ContextMenuStrip = this.copyMenuStrip;
             this.sha256TextBox.Location = new System.Drawing.Point(84, 71);
             this.sha256TextBox.Name = "sha256TextBox";
+            this.sha256TextBox.ReadOnly = true;
             this.sha256TextBox.Size = new System.Drawing.Size(509, 20);
             this.sha256TextBox.TabIndex = 7;
+            this.sha256TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // copyMenuStrip
             // 
@@ -133,8 +136,10 @@
             this.sha1TextBox.ContextMenuStrip = this.copyMenuStrip;
             this.sha1TextBox.Location = new System.Drawing.Point(84, 45);
             this.sha1TextBox.Name = "sha1TextBox";
+            this.sha1TextBox.ReadOnly = true;
             this.sha1TextBox.Size = new System.Drawing.Size(509, 20);
             this.sha1TextBox.TabIndex = 5;
+            this.sha1TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
@@ -150,8 +155,10 @@
             this.md5TextBox.ContextMenuStrip = this.copyMenuStrip;
             this.md5TextBox.Location = new System.Drawing.Point(84, 19);
             this.md5TextBox.Name = "md5TextBox";
+            this.md5TextBox.ReadOnly = true;
             this.md5TextBox.Size = new System.Drawing.Size(509, 20);
             this.md5TextBox.TabIndex = 3;
+            this.md5TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label1
             // 
@@ -164,6 +171,9 @@
             // 
             // exitButton
             // 
+            this.exitButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ControlDark;
+            this.exitButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ControlLight;
+            this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.Location = new System.Drawing.Point(13, 154);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(136, 51);
@@ -197,11 +207,15 @@
             // 
             this.vtMessageTextBox.Location = new System.Drawing.Point(7, 20);
             this.vtMessageTextBox.Name = "vtMessageTextBox";
+            this.vtMessageTextBox.ReadOnly = true;
             this.vtMessageTextBox.Size = new System.Drawing.Size(586, 20);
             this.vtMessageTextBox.TabIndex = 0;
+            this.vtMessageTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // trafficLight
             // 
+            this.trafficLight.BackColor = System.Drawing.Color.Silver;
+            this.trafficLight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.trafficLight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trafficLight.Image = global::GetFileHash.Properties.Resources.traffic_off;
             this.trafficLight.Location = new System.Drawing.Point(3, 16);
@@ -221,6 +235,11 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "File Safety Rating";
             // 
+            // trafficLightTimer
+            // 
+            this.trafficLightTimer.Interval = 750;
+            this.trafficLightTimer.Tick += new System.EventHandler(this.trafficLightTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -234,6 +253,9 @@
             this.Controls.Add(this.filePathBox);
             this.Controls.Add(this.chooseFileButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(924, 252);
+            this.MinimumSize = new System.Drawing.Size(924, 252);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Get File Hash";
@@ -269,6 +291,7 @@
         private System.Windows.Forms.TextBox vtMessageTextBox;
         private System.Windows.Forms.PictureBox trafficLight;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Timer trafficLightTimer;
     }
 }
 

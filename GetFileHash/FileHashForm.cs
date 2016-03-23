@@ -9,31 +9,50 @@ using VirusTotalNET.Objects;
 
 namespace GetFileHash
 {
-    public partial class Form1 : Form
+    public partial class FileHashForm : Form
     {
+        enum AlertStatus
+        {
+            None,
+            Green,
+            Yellow,
+            Red
+        };
+
         private const string ScanUrl = "http://www.google.com/";
         VirusTotal virusTotal;
+        AlertStatus alertStatus = AlertStatus.None;
 
-        public Form1()
+        public FileHashForm()
         {
             InitializeComponent();
 
             try
             {
-                RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
-                regKey.CreateSubKey("VirusTotal");
-                regKey = regKey.OpenSubKey("VirusTotal", true);
-                var apiKey = regKey.GetValue("APIkey");
+                var apiKey = checkRegistry();
+
+                // First attempt
                 if (apiKey == null)
                 {
-                    MessageBox.Show("You need to obtain your API key from VirusTotal and save it in the registry as HKCU/Software/VirusTotal/APIkey", "Missing API Key", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    VirusTotalButton.Enabled = false;
+                    VtApiForm vtApiForm = new VtApiForm();
+                    DialogResult result = vtApiForm.ShowDialog();
+
+                    if (result == DialogResult.OK)
+                    {
+                        apiKey = checkRegistry();
+                    }
                 }
-                else
+                // Second attempt
+                if (apiKey != null)
                 {
                     string vtApiKey = apiKey.ToString();
                     virusTotal = new VirusTotal(vtApiKey);
                     virusTotal.UseTLS = true;
+                    VirusTotalButton.Enabled = true;
+                }
+                else
+                {
+                    VirusTotalButton.Enabled = false;
                 }
             }
             catch (Exception eX)
@@ -42,9 +61,22 @@ namespace GetFileHash
             }
         }
 
+        private object checkRegistry()
+        {
+            RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
+            regKey.CreateSubKey("VirusTotal");
+            regKey = regKey.OpenSubKey("VirusTotal", true);
+            var apiKey = regKey.GetValue("APIkey");
+
+            return apiKey;
+        }
+
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             string fileNamePath = openFileDialog.FileName;
+            trafficLight.Image = Properties.Resources.traffic_off;
+            vtMessageTextBox.Text = string.Empty;
+            trafficLightTimer.Enabled = false;
             calculateChecksums(fileNamePath);
         }
 
@@ -93,6 +125,9 @@ namespace GetFileHash
         {
             if (File.Exists(filePathBox.Text))
             {
+                trafficLight.Image = Properties.Resources.traffic_off;
+                vtMessageTextBox.Text = string.Empty;
+                trafficLightTimer.Enabled = false;
                 calculateChecksums(filePathBox.Text);
             }
         }
@@ -123,22 +158,53 @@ namespace GetFileHash
                     vtMessageTextBox.Text = string.Format("{0}, Detection Score = {1}/{2}", fileReport.VerboseMsg, fileReport.Positives, fileReport.Total);
                     if (fileReport.Positives > fileReport.Total / 2)
                     {
-                        trafficLight.Image = Properties.Resources.traffic_red;
+                        alertStatus = AlertStatus.Red;
                     }
                     else if (fileReport.Positives > 0)
                     {
-                        trafficLight.Image = Properties.Resources.traffic_yellow;
+                        alertStatus = AlertStatus.Yellow;
                     }
                     else
                     {
-                        trafficLight.Image = Properties.Resources.traffic_green;
+                        alertStatus = AlertStatus.Green;
                     }
+                    trafficLightTimer.Enabled = true;
                 }
                 else
                 {
                     ScanResult scanResult = virusTotal.ScanFile(fileInfo);
                     vtMessageTextBox.Text = scanResult.VerboseMsg;
                 }
+            }
+        }
+
+        bool altTick = true;
+
+        private void trafficLightTimer_Tick(object sender, EventArgs e)
+        {
+            if (altTick)
+            {
+                switch (alertStatus)
+                {
+                    case AlertStatus.None:
+                        trafficLight.Image = Properties.Resources.traffic_off;
+                        break;
+                    case AlertStatus.Green:
+                        trafficLight.Image = Properties.Resources.traffic_green;
+                        break;
+                    case AlertStatus.Yellow:
+                        trafficLight.Image = Properties.Resources.traffic_yellow;
+                        break;
+                    case AlertStatus.Red:
+                        trafficLight.Image = Properties.Resources.traffic_red;
+                        break;
+                }
+                altTick = false;
+            }
+            else
+            {
+                trafficLight.Image = Properties.Resources.traffic_off;
+                altTick = true;
             }
         }
     }
