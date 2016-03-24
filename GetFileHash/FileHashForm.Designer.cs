@@ -49,11 +49,14 @@
             this.trafficLight = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.trafficLightTimer = new System.Windows.Forms.Timer(this.components);
+            this.recentFilesMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.copyMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).BeginInit();
             this.groupBox3.SuspendLayout();
+            this.recentFilesMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -67,6 +70,7 @@
             // chooseFileButton
             // 
             this.chooseFileButton.AutoSize = true;
+            this.chooseFileButton.ContextMenuStrip = this.recentFilesMenuStrip;
             this.chooseFileButton.Location = new System.Drawing.Point(13, 13);
             this.chooseFileButton.Name = "chooseFileButton";
             this.chooseFileButton.Size = new System.Drawing.Size(136, 23);
@@ -77,6 +81,7 @@
             // 
             // filePathBox
             // 
+            this.filePathBox.ContextMenuStrip = this.recentFilesMenuStrip;
             this.filePathBox.Location = new System.Drawing.Point(155, 15);
             this.filePathBox.Name = "filePathBox";
             this.filePathBox.Size = new System.Drawing.Size(741, 20);
@@ -240,7 +245,20 @@
             this.trafficLightTimer.Interval = 750;
             this.trafficLightTimer.Tick += new System.EventHandler(this.trafficLightTimer_Tick);
             // 
-            // Form1
+            // recentFilesMenuStrip
+            // 
+            this.recentFilesMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recentFilesToolStripMenuItem});
+            this.recentFilesMenuStrip.Name = "copyMenuStrip";
+            this.recentFilesMenuStrip.Size = new System.Drawing.Size(137, 26);
+            // 
+            // recentFilesToolStripMenuItem
+            // 
+            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.recentFilesToolStripMenuItem.Text = "Recent Files";
+            // 
+            // FileHashForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -256,9 +274,10 @@
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(924, 252);
             this.MinimumSize = new System.Drawing.Size(924, 252);
-            this.Name = "Form1";
+            this.Name = "FileHashForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Get File Hash";
+            this.Load += new System.EventHandler(this.FileHashForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.copyMenuStrip.ResumeLayout(false);
@@ -266,6 +285,7 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            this.recentFilesMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -292,6 +312,9 @@
         private System.Windows.Forms.PictureBox trafficLight;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Timer trafficLightTimer;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ContextMenuStrip recentFilesMenuStrip;
+        public System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
     }
 }
 

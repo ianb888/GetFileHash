@@ -22,6 +22,7 @@ namespace GetFileHash
         private const string ScanUrl = "http://www.google.com/";
         VirusTotal virusTotal;
         AlertStatus alertStatus = AlertStatus.None;
+        MRUManager mruManager;
 
         public FileHashForm()
         {
@@ -61,6 +62,37 @@ namespace GetFileHash
             }
         }
 
+        private void FileHashForm_Load(object sender, EventArgs e)
+        {
+            mruManager = new MRUManager(recentFilesToolStripMenuItem, "GetFileHash", recentFileGotClicked_handler, recentFilesGotCleared_handler);
+        }
+
+        private void recentFileGotClicked_handler(object obj, EventArgs evt)
+        {
+            string fileNamePath = (obj as ToolStripItem).Text;
+
+            if (!File.Exists(fileNamePath))
+            {
+                if (MessageBox.Show(string.Format("{0} doesn't exist. Remove from recent files?", fileNamePath), "File not found", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    mruManager.RemoveRecentFile(fileNamePath);
+                }
+                return;
+            }
+
+            filePathBox.Text = fileNamePath;
+            trafficLight.Image = Properties.Resources.traffic_off;
+            vtMessageTextBox.Text = string.Empty;
+            trafficLightTimer.Enabled = false;
+            calculateChecksums(fileNamePath);
+        }
+
+        private void recentFilesGotCleared_handler(object obj, EventArgs evt)
+        {
+            // Prior to this function getting called, all recent files in the registry and 
+            // in the program's 'Recent Files' menu are cleared.
+        }
+
         private object checkRegistry()
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
@@ -78,6 +110,9 @@ namespace GetFileHash
             vtMessageTextBox.Text = string.Empty;
             trafficLightTimer.Enabled = false;
             calculateChecksums(fileNamePath);
+
+            //Now give it to the MRUManager
+            mruManager.AddRecentFile(fileNamePath);
         }
 
         private void openFileDialog_HelpRequest(object sender, EventArgs e)
