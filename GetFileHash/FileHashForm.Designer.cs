@@ -32,6 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileHashForm));
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.chooseFileButton = new System.Windows.Forms.Button();
+            this.recentFilesMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.filePathBox = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.sha256TextBox = new System.Windows.Forms.TextBox();
@@ -43,20 +45,19 @@
             this.md5TextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.exitButton = new System.Windows.Forms.Button();
-            this.VirusTotalButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.vtMessageTextBox = new System.Windows.Forms.TextBox();
             this.trafficLight = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.trafficLightTimer = new System.Windows.Forms.Timer(this.components);
-            this.recentFilesMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.recentFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.VirusTotalButton = new System.Windows.Forms.Button();
+            this.resultsButton = new System.Windows.Forms.Button();
+            this.recentFilesMenuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.copyMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).BeginInit();
             this.groupBox3.SuspendLayout();
-            this.recentFilesMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -78,6 +79,19 @@
             this.chooseFileButton.Text = "Choose a file";
             this.chooseFileButton.UseVisualStyleBackColor = true;
             this.chooseFileButton.Click += new System.EventHandler(this.chooseFileButton_Click);
+            // 
+            // recentFilesMenuStrip
+            // 
+            this.recentFilesMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.recentFilesToolStripMenuItem});
+            this.recentFilesMenuStrip.Name = "copyMenuStrip";
+            this.recentFilesMenuStrip.Size = new System.Drawing.Size(137, 26);
+            // 
+            // recentFilesToolStripMenuItem
+            // 
+            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.recentFilesToolStripMenuItem.Text = "Recent Files";
             // 
             // filePathBox
             // 
@@ -181,22 +195,11 @@
             this.exitButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitButton.Location = new System.Drawing.Point(13, 154);
             this.exitButton.Name = "exitButton";
-            this.exitButton.Size = new System.Drawing.Size(136, 51);
+            this.exitButton.Size = new System.Drawing.Size(136, 50);
             this.exitButton.TabIndex = 3;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
-            // 
-            // VirusTotalButton
-            // 
-            this.VirusTotalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.VirusTotalButton.Location = new System.Drawing.Point(13, 42);
-            this.VirusTotalButton.Name = "VirusTotalButton";
-            this.VirusTotalButton.Size = new System.Drawing.Size(136, 104);
-            this.VirusTotalButton.TabIndex = 4;
-            this.VirusTotalButton.Text = "Search VirusTotal";
-            this.VirusTotalButton.UseVisualStyleBackColor = true;
-            this.VirusTotalButton.Click += new System.EventHandler(this.VirusTotalButton_Click);
             // 
             // groupBox2
             // 
@@ -245,24 +248,35 @@
             this.trafficLightTimer.Interval = 750;
             this.trafficLightTimer.Tick += new System.EventHandler(this.trafficLightTimer_Tick);
             // 
-            // recentFilesMenuStrip
+            // VirusTotalButton
             // 
-            this.recentFilesMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.recentFilesToolStripMenuItem});
-            this.recentFilesMenuStrip.Name = "copyMenuStrip";
-            this.recentFilesMenuStrip.Size = new System.Drawing.Size(137, 26);
+            this.VirusTotalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VirusTotalButton.Location = new System.Drawing.Point(13, 42);
+            this.VirusTotalButton.Name = "VirusTotalButton";
+            this.VirusTotalButton.Size = new System.Drawing.Size(136, 50);
+            this.VirusTotalButton.TabIndex = 4;
+            this.VirusTotalButton.Text = "Search VirusTotal";
+            this.VirusTotalButton.UseVisualStyleBackColor = true;
+            this.VirusTotalButton.Click += new System.EventHandler(this.VirusTotalButton_Click);
             // 
-            // recentFilesToolStripMenuItem
+            // resultsButton
             // 
-            this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
-            this.recentFilesToolStripMenuItem.Text = "Recent Files";
+            this.resultsButton.Enabled = false;
+            this.resultsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resultsButton.Location = new System.Drawing.Point(13, 98);
+            this.resultsButton.Name = "resultsButton";
+            this.resultsButton.Size = new System.Drawing.Size(136, 50);
+            this.resultsButton.TabIndex = 8;
+            this.resultsButton.Text = "Show Detailed Results";
+            this.resultsButton.UseVisualStyleBackColor = true;
+            this.resultsButton.Click += new System.EventHandler(this.resultsButton_Click);
             // 
             // FileHashForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(908, 213);
+            this.Controls.Add(this.resultsButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.VirusTotalButton);
@@ -278,6 +292,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Get File Hash";
             this.Load += new System.EventHandler(this.FileHashForm_Load);
+            this.recentFilesMenuStrip.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.copyMenuStrip.ResumeLayout(false);
@@ -285,7 +300,6 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).EndInit();
             this.groupBox3.ResumeLayout(false);
-            this.recentFilesMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -306,7 +320,6 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.ContextMenuStrip copyMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
-        private System.Windows.Forms.Button VirusTotalButton;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox vtMessageTextBox;
         private System.Windows.Forms.PictureBox trafficLight;
@@ -315,6 +328,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ContextMenuStrip recentFilesMenuStrip;
         public System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
+        private System.Windows.Forms.Button VirusTotalButton;
+        private System.Windows.Forms.Button resultsButton;
     }
 }
 

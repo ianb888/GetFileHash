@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Security.Cryptography;
 using System.Windows.Forms;
@@ -21,8 +22,9 @@ namespace GetFileHash
 
         private const string ScanUrl = "http://www.google.com/";
         VirusTotal virusTotal;
-        AlertStatus alertStatus = AlertStatus.None;
         MRUManager mruManager;
+        FileReport fileReport;
+        AlertStatus alertStatus = AlertStatus.None;
 
         public FileHashForm()
         {
@@ -84,6 +86,7 @@ namespace GetFileHash
             trafficLight.Image = Properties.Resources.traffic_off;
             vtMessageTextBox.Text = string.Empty;
             trafficLightTimer.Enabled = false;
+            resultsButton.Enabled = false;
             calculateChecksums(fileNamePath);
         }
 
@@ -109,6 +112,7 @@ namespace GetFileHash
             trafficLight.Image = Properties.Resources.traffic_off;
             vtMessageTextBox.Text = string.Empty;
             trafficLightTimer.Enabled = false;
+            resultsButton.Enabled = false;
             calculateChecksums(fileNamePath);
 
             //Now give it to the MRUManager
@@ -163,6 +167,7 @@ namespace GetFileHash
                 trafficLight.Image = Properties.Resources.traffic_off;
                 vtMessageTextBox.Text = string.Empty;
                 trafficLightTimer.Enabled = false;
+                resultsButton.Enabled = false;
                 calculateChecksums(filePathBox.Text);
             }
         }
@@ -180,11 +185,11 @@ namespace GetFileHash
         private void VirusTotalButton_Click(object sender, EventArgs e)
         {
             if (File.Exists(filePathBox.Text))
-            {
+            {                
                 FileInfo fileInfo = new FileInfo(filePathBox.Text);
 
                 // Check if the file has been scanned previously
-                FileReport fileReport = virusTotal.GetFileReport(fileInfo);
+                fileReport = virusTotal.GetFileReport(fileInfo);
                 bool hasBeenScannedBefore = fileReport.ResponseCode == ReportResponseCode.Present;
 
                 // If the file has already been scanned, then the results are embedded inside of the report
@@ -193,10 +198,12 @@ namespace GetFileHash
                     vtMessageTextBox.Text = string.Format("{0}, Detection Score = {1}/{2}", fileReport.VerboseMsg, fileReport.Positives, fileReport.Total);
                     if (fileReport.Positives > fileReport.Total / 2)
                     {
+                        resultsButton.Enabled = true;
                         alertStatus = AlertStatus.Red;
                     }
                     else if (fileReport.Positives > 0)
                     {
+                        resultsButton.Enabled = true;
                         alertStatus = AlertStatus.Yellow;
                     }
                     else
@@ -240,6 +247,29 @@ namespace GetFileHash
             {
                 trafficLight.Image = Properties.Resources.traffic_off;
                 altTick = true;
+            }
+        }
+
+        private void resultsButton_Click(object sender, EventArgs e)
+        {
+            if (fileReport != null)
+            {
+                ResultsForm rForm = new ResultsForm(fileReport);
+                Screen[] screens = Screen.AllScreens;
+                Rectangle bounds;
+
+                if (screens.Length > 1)
+                {
+                    bounds = screens[1].WorkingArea;
+                }
+                else
+                {
+                    bounds = screens[0].WorkingArea;
+                }
+                
+                rForm.SetBounds(bounds.X + (bounds.Width / 4), bounds.Y, bounds.Width / 2, bounds.Height);
+                rForm.StartPosition = FormStartPosition.Manual;
+                rForm.Show();
             }
         }
     }
