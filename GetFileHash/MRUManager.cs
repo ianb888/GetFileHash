@@ -43,7 +43,7 @@ namespace GetFileHash
         {
             try
             {
-                RegistryKey rK = Registry.CurrentUser.OpenSubKey(this.SubKeyName, true);
+                RegistryKey rK = Registry.CurrentUser.OpenSubKey(SubKeyName, true);
                 if (rK == null)
                 {
                     return;
@@ -61,10 +61,8 @@ namespace GetFileHash
             {
                 Console.WriteLine(ex.ToString());
             }
-            if (OnClearRecentFilesClick != null)
-            {
-                OnClearRecentFilesClick(obj, evt);
-            }
+
+            OnClearRecentFilesClick?.Invoke(obj, evt);
         }
 
         private void _refreshRecentFilesMenu()
@@ -118,6 +116,7 @@ namespace GetFileHash
         public void AddRecentFile(string fileNameWithFullPath)
         {
             string s;
+
             try
             {
                 RegistryKey rK = Registry.CurrentUser.CreateSubKey(SubKeyName, RegistryKeyPermissionCheck.ReadWriteSubTree);

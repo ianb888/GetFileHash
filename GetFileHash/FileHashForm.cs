@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -67,6 +68,37 @@ namespace GetFileHash
         private void FileHashForm_Load(object sender, EventArgs e)
         {
             mruManager = new MRUManager(recentFilesToolStripMenuItem, "GetFileHash", recentFileGotClicked_handler, recentFilesGotCleared_handler);
+
+            try
+            {
+                // Now check if there was a file name provided on the command line...
+                string[] args = Environment.GetCommandLineArgs();
+
+                var x = from s in args select s;
+                int argCount = x.Count();
+
+                if (argCount > 1)
+                {
+                    if (!string.IsNullOrWhiteSpace(args[1]))
+                    {
+                        string fileNamePath = args[1];
+
+                        filePathBox.Text = fileNamePath;
+                        trafficLight.Image = Properties.Resources.traffic_off;
+                        vtMessageTextBox.Text = string.Empty;
+                        trafficLightTimer.Enabled = false;
+                        resultsButton.Enabled = false;
+                        calculateChecksums(fileNamePath);
+
+                        //Now give it to the MRUManager
+                        mruManager.AddRecentFile(fileNamePath);
+                    }
+                }
+            }
+            catch
+            {
+
+            }
         }
 
         private void recentFileGotClicked_handler(object obj, EventArgs evt)
@@ -128,8 +160,7 @@ namespace GetFileHash
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string fileNamePath = openFileDialog.FileName;
-                filePathBox.Text = fileNamePath;
+                filePathBox.Text = openFileDialog.FileName;
             }
         }
 
