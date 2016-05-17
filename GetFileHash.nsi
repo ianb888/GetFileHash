@@ -103,6 +103,10 @@ Section "MainSection" SEC01
   continue:
   CreateDirectory "$SMPROGRAMS\${PRODUCT_PUBLISHER}"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe"
+  
+  ; Create an entry in the SendTo location
+  ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "SendTo"
+  CreateShortCut "$0\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe"
 SectionEnd
 
 Section -Post
@@ -227,6 +231,10 @@ Section Uninstall
 
   Delete "$SMPROGRAMS\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}.lnk"
   Delete "$SMPROGRAMS\${PRODUCT_PUBLISHER}\Uninstall ${PRODUCT_NAME}.lnk"
+
+  ; Delete the entry in the SendTo location
+  ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders" "SendTo"
+  Delete "$0\${PRODUCT_NAME}.lnk"
 
   RMDir "$SMPROGRAMS\${PRODUCT_PUBLISHER}"
   RMDir "$INSTDIR"
