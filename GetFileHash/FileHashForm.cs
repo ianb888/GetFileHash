@@ -199,10 +199,21 @@ namespace GetFileHash
         /// <returns>Returns the calculated hash.</returns>
         public static string GetHashFromFile(string fileName, HashAlgorithm algorithm)
         {
-            using (var stream = new BufferedStream(File.OpenRead(fileName), 100000))
+            string retVal = string.Empty;
+
+            try
             {
-                return BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", string.Empty);
+                using (var stream = new BufferedStream(File.OpenRead(fileName), 100000))
+                {
+                    retVal = BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", string.Empty);
+                }
             }
+            catch
+            {
+
+            }
+
+            return retVal;
         }
 
         private void exitButton_Click(object sender, EventArgs e)
