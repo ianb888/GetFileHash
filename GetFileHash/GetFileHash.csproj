@@ -51,11 +51,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm.cs" />
+    <Compile Include="DataEntropyUTF8.cs" />
+    <Compile Include="FileAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileAnalysis.Designer.cs">
+      <DependentUpon>FileAnalysis.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileHashForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FileHashForm.Designer.cs">
       <DependentUpon>FileHashForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Histogram.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Histogram.Designer.cs">
+      <DependentUpon>Histogram.cs</DependentUpon>
     </Compile>
     <Compile Include="MRUManager.cs" />
     <Compile Include="Program.cs" />
@@ -72,8 +85,14 @@
     <Compile Include="VtApiForm.Designer.cs">
       <DependentUpon>VtApiForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FileAnalysis.resx">
+      <DependentUpon>FileAnalysis.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FileHashForm.resx">
       <DependentUpon>FileHashForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Histogram.resx">
+      <DependentUpon>Histogram.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -22,10 +22,14 @@ namespace GetFileHash
         };
 
         private const string ScanUrl = "http://www.google.com/";
+
         VirusTotal virusTotal;
         MRUManager mruManager;
         FileReport fileReport;
         AlertStatus alertStatus = AlertStatus.None;
+
+        private string fileNamePath = string.Empty;
+        private bool apiAvailable = false;
 
         public FileHashForm()
         {
@@ -33,9 +37,10 @@ namespace GetFileHash
 
             try
             {
+                // First, try to get the API key from the registry...
                 var apiKey = checkRegistry();
 
-                // First attempt
+                // Nothing found? Then ask for it to be entered...
                 if (apiKey == null)
                 {
                     VtApiForm vtApiForm = new VtApiForm();
@@ -43,20 +48,21 @@ namespace GetFileHash
 
                     if (result == DialogResult.OK)
                     {
+                        // A key was entered, so read it back from the registry to make sure it was saved correctly.
                         apiKey = checkRegistry();
                     }
                 }
-                // Second attempt
+                // After all the preliminary checks, if we have a valid API key, then configure it for use.
                 if (apiKey != null)
                 {
                     string vtApiKey = apiKey.ToString();
                     virusTotal = new VirusTotal(vtApiKey);
                     virusTotal.UseTLS = true;
-                    VirusTotalButton.Enabled = true;
+                    apiAvailable = true;
                 }
                 else
                 {
-                    VirusTotalButton.Enabled = false;
+                    apiAvailable = false;
                 }
             }
             catch (Exception eX)
@@ -65,13 +71,41 @@ namespace GetFileHash
             }
         }
 
+        /// <summary>
+        /// Disable the buttons and timer until it is valid for them to be used.
+        /// </summary>
+        private void DisableButtons()
+        {
+            trafficLight.Image = Properties.Resources.traffic_off;
+            vtMessageTextBox.Text = string.Empty;
+            trafficLightTimer.Enabled = false;
+            resultsButton.Enabled = false;
+            showHistogramButton.Enabled = false;
+        }
+
+        /// <summary>
+        /// Enable the buttons for use.
+        /// </summary>
+        private void EnableButtons()
+        {
+            if (apiAvailable)
+            {
+                VirusTotalButton.Enabled = true;
+            }
+            else
+            {
+                VirusTotalButton.Enabled = false;
+            }
+            showHistogramButton.Enabled = true;
+        }
+
         private void FileHashForm_Load(object sender, EventArgs e)
         {
             mruManager = new MRUManager(recentFilesToolStripMenuItem, "GetFileHash", recentFileGotClicked_handler, recentFilesGotCleared_handler);
 
             try
             {
-                // Now check if there was a file name provided on the command line...
+                // First, check if there was a file name provided on the command line...
                 string[] args = Environment.GetCommandLineArgs();
 
                 var x = from s in args select s;
@@ -84,14 +118,12 @@ namespace GetFileHash
                         string fileNamePath = args[1];
 
                         filePathBox.Text = fileNamePath;
-                        trafficLight.Image = Properties.Resources.traffic_off;
-                        vtMessageTextBox.Text = string.Empty;
-                        trafficLightTimer.Enabled = false;
-                        resultsButton.Enabled = false;
-                        calculateChecksums(fileNamePath);
-
-                        //Now give it to the MRUManager
-                        mruManager.AddRecentFile(fileNamePath);
+                        DisableButtons();
+                        if (calculateChecksums(fileNamePath))
+                        {
+                            // Now give it to the MRUManager
+                            mruManager.AddRecentFile(fileNamePath);
+                        }
                     }
                 }
             }
@@ -103,7 +135,7 @@ namespace GetFileHash
 
         private void recentFileGotClicked_handler(object obj, EventArgs evt)
         {
-            string fileNamePath = (obj as ToolStripItem).Text;
+            fileNamePath = (obj as ToolStripItem).Text;
 
             if (!File.Exists(fileNamePath))
             {
@@ -115,10 +147,7 @@ namespace GetFileHash
             }
 
             filePathBox.Text = fileNamePath;
-            trafficLight.Image = Properties.Resources.traffic_off;
-            vtMessageTextBox.Text = string.Empty;
-            trafficLightTimer.Enabled = false;
-            resultsButton.Enabled = false;
+            DisableButtons();
             calculateChecksums(fileNamePath);
         }
 
@@ -128,6 +157,10 @@ namespace GetFileHash
             // in the program's 'Recent Files' menu are cleared.
         }
 
+        /// <summary>
+        /// Check if the API key was saved in the registry.
+        /// </summary>
+        /// <returns>Returns the API key.</returns>
         private object checkRegistry()
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
@@ -140,20 +173,14 @@ namespace GetFileHash
 
         private void openFileDialog_FileOk(object sender, CancelEventArgs e)
         {
-            string fileNamePath = openFileDialog.FileName;
-            trafficLight.Image = Properties.Resources.traffic_off;
-            vtMessageTextBox.Text = string.Empty;
-            trafficLightTimer.Enabled = false;
-            resultsButton.Enabled = false;
-            calculateChecksums(fileNamePath);
+            fileNamePath = openFileDialog.FileName;
+            DisableButtons();
 
-            //Now give it to the MRUManager
-            mruManager.AddRecentFile(fileNamePath);
-        }
-
-        private void openFileDialog_HelpRequest(object sender, EventArgs e)
-        {
-
+            if (calculateChecksums(fileNamePath))
+            {
+                //Now give it to the MRUManager
+                mruManager.AddRecentFile(fileNamePath);
+            }
         }
 
         private void chooseFileButton_Click(object sender, EventArgs e)
@@ -164,6 +191,12 @@ namespace GetFileHash
             }
         }
 
+        /// <summary>
+        /// Calculates the binary hash of the provided file, using the specified algorithm.
+        /// </summary>
+        /// <param name="fileName">The patch and file name to use.</param>
+        /// <param name="algorithm">The hashing algorithm to use.</param>
+        /// <returns>Returns the calculated hash.</returns>
         public static string GetHashFromFile(string fileName, HashAlgorithm algorithm)
         {
             using (var stream = new BufferedStream(File.OpenRead(fileName), 100000))
@@ -195,29 +228,50 @@ namespace GetFileHash
         {
             if (File.Exists(filePathBox.Text))
             {
-                trafficLight.Image = Properties.Resources.traffic_off;
-                vtMessageTextBox.Text = string.Empty;
-                trafficLightTimer.Enabled = false;
-                resultsButton.Enabled = false;
-                calculateChecksums(filePathBox.Text);
+                fileNamePath = filePathBox.Text;
+                DisableButtons();
+                calculateChecksums(fileNamePath);
             }
         }
 
-        private void calculateChecksums(string fileNamePath)
+        /// <summary>
+        /// Calculates the MD5, SHA1, and SHA256 hashes for the specified file.
+        /// </summary>
+        /// <param name="fileName">The path and file name to use.</param>
+        /// <returns>Returns TRUE on success.</returns>
+        private bool calculateChecksums(string fileName)
         {
-            string checksumMd5 = GetHashFromFile(fileNamePath, Algorithms.MD5);
-            md5TextBox.Text = checksumMd5;
-            string checksumSha1 = GetHashFromFile(fileNamePath, Algorithms.SHA1);
-            sha1TextBox.Text = checksumSha1;
-            string checksumSha256 = GetHashFromFile(fileNamePath, Algorithms.SHA256);
-            sha256TextBox.Text = checksumSha256;
+            bool success = false;
+
+            if (File.Exists(fileName))
+            {
+                string checksumMd5 = GetHashFromFile(fileName, Algorithms.MD5);
+                md5TextBox.Text = checksumMd5;
+                string checksumSha1 = GetHashFromFile(fileName, Algorithms.SHA1);
+                sha1TextBox.Text = checksumSha1;
+                string checksumSha256 = GetHashFromFile(fileName, Algorithms.SHA256);
+                sha256TextBox.Text = checksumSha256;
+                EnableButtons();
+                success = true;
+            }
+            else
+            {
+                fileNamePath = string.Empty;
+                filePathBox.Text = string.Empty;
+                MessageBox.Show("Unable to open the file.", "File Access Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                success = false;
+            }
+
+            return success;
         }
 
         private void VirusTotalButton_Click(object sender, EventArgs e)
         {
-            if (File.Exists(filePathBox.Text))
+            fileNamePath = filePathBox.Text;
+
+            if (File.Exists(fileNamePath))
             {                
-                FileInfo fileInfo = new FileInfo(filePathBox.Text);
+                FileInfo fileInfo = new FileInfo(fileNamePath);
 
                 // Check if the file has been scanned previously
                 fileReport = virusTotal.GetFileReport(fileInfo);
@@ -302,6 +356,12 @@ namespace GetFileHash
                 rForm.StartPosition = FormStartPosition.Manual;
                 rForm.Show();
             }
+        }
+
+        private void showHistogramButton_Click(object sender, EventArgs e)
+        {
+            FileAnalysis analysis = new FileAnalysis(fileNamePath);
+            analysis.Show();
         }
     }
 }

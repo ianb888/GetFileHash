@@ -47,17 +47,18 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.vtMessageTextBox = new System.Windows.Forms.TextBox();
-            this.trafficLight = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.trafficLightTimer = new System.Windows.Forms.Timer(this.components);
             this.VirusTotalButton = new System.Windows.Forms.Button();
             this.resultsButton = new System.Windows.Forms.Button();
+            this.showHistogramButton = new System.Windows.Forms.Button();
+            this.trafficLight = new System.Windows.Forms.PictureBox();
             this.recentFilesMenuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.copyMenuStrip.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).BeginInit();
             this.SuspendLayout();
             // 
             // openFileDialog
@@ -66,7 +67,6 @@
             this.openFileDialog.SupportMultiDottedExtensions = true;
             this.openFileDialog.Title = "Choose the file to open";
             this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
-            this.openFileDialog.HelpRequest += new System.EventHandler(this.openFileDialog_HelpRequest);
             // 
             // chooseFileButton
             // 
@@ -220,25 +220,12 @@
             this.vtMessageTextBox.TabIndex = 0;
             this.vtMessageTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // trafficLight
-            // 
-            this.trafficLight.BackColor = System.Drawing.Color.Silver;
-            this.trafficLight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.trafficLight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.trafficLight.Image = global::GetFileHash.Properties.Resources.traffic_off;
-            this.trafficLight.Location = new System.Drawing.Point(3, 16);
-            this.trafficLight.Name = "trafficLight";
-            this.trafficLight.Size = new System.Drawing.Size(129, 144);
-            this.trafficLight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.trafficLight.TabIndex = 6;
-            this.trafficLight.TabStop = false;
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.trafficLight);
-            this.groupBox3.Location = new System.Drawing.Point(761, 42);
+            this.groupBox3.Location = new System.Drawing.Point(760, 98);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(135, 163);
+            this.groupBox3.Size = new System.Drawing.Size(136, 107);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "File Safety Rating";
@@ -250,6 +237,7 @@
             // 
             // VirusTotalButton
             // 
+            this.VirusTotalButton.Enabled = false;
             this.VirusTotalButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VirusTotalButton.Location = new System.Drawing.Point(13, 42);
             this.VirusTotalButton.Name = "VirusTotalButton";
@@ -271,11 +259,37 @@
             this.resultsButton.UseVisualStyleBackColor = true;
             this.resultsButton.Click += new System.EventHandler(this.resultsButton_Click);
             // 
+            // showHistogramButton
+            // 
+            this.showHistogramButton.Enabled = false;
+            this.showHistogramButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showHistogramButton.Location = new System.Drawing.Point(760, 42);
+            this.showHistogramButton.Name = "showHistogramButton";
+            this.showHistogramButton.Size = new System.Drawing.Size(136, 50);
+            this.showHistogramButton.TabIndex = 9;
+            this.showHistogramButton.Text = "Show File Analysis";
+            this.showHistogramButton.UseVisualStyleBackColor = true;
+            this.showHistogramButton.Click += new System.EventHandler(this.showHistogramButton_Click);
+            // 
+            // trafficLight
+            // 
+            this.trafficLight.BackColor = System.Drawing.Color.Silver;
+            this.trafficLight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.trafficLight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.trafficLight.Image = global::GetFileHash.Properties.Resources.traffic_off;
+            this.trafficLight.Location = new System.Drawing.Point(3, 16);
+            this.trafficLight.Name = "trafficLight";
+            this.trafficLight.Size = new System.Drawing.Size(130, 88);
+            this.trafficLight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.trafficLight.TabIndex = 6;
+            this.trafficLight.TabStop = false;
+            // 
             // FileHashForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(908, 213);
+            this.Controls.Add(this.showHistogramButton);
             this.Controls.Add(this.resultsButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -298,8 +312,8 @@
             this.copyMenuStrip.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.trafficLight)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,6 +344,7 @@
         public System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.Button VirusTotalButton;
         private System.Windows.Forms.Button resultsButton;
+        private System.Windows.Forms.Button showHistogramButton;
     }
 }
 
