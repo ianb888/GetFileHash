@@ -28,16 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // Histogram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MinimumSize = new System.Drawing.Size(206, 174);
             this.Name = "Histogram";
             this.Size = new System.Drawing.Size(206, 174);
+            this.Click += new System.EventHandler(this.Histogram_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Histogram_Paint);
             this.Resize += new System.EventHandler(this.Histogram_Resize);
             this.ResumeLayout(false);
@@ -45,5 +48,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

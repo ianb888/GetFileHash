@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace GetFileHash
@@ -41,6 +42,8 @@ namespace GetFileHash
         /// The default font to use.
         /// </summary>
         private Font myFont = new Font("Tahoma", 10);
+        private Bitmap bitmap;
+        private Graphics g;
 
         [Category("Histogram Options")]
         [Description("The distance from the margins for the histogram")]
@@ -163,7 +166,11 @@ namespace GetFileHash
         {
             if (myValues != null)
             {
-                Graphics g = e.Graphics;
+                //Panel p = (Panel)sender;
+                Histogram p = (Histogram)sender;
+                Bitmap bitmap = new Bitmap(p.ClientSize.Width, p.ClientSize.Height);
+                //g = e.Graphics;
+                g = Graphics.FromImage(bitmap);
 
                 // Calculate the position for the labels on the X axis at 25%, 50%, 75%, and 100%
                 ArrayList xLabelsList = new ArrayList();
@@ -250,6 +257,8 @@ namespace GetFileHash
                 // Top edge
                 g.DrawLine(penLine, new PointF(myOffset + (maxXvalue * myXUnit), myOffset), new PointF(myOffset, myOffset));
             }
+
+            e.Graphics.DrawImage(bitmap, 0, 0);
         }
 
         /// <summary>
@@ -282,6 +291,20 @@ namespace GetFileHash
         {
             ComputeXYUnitValues();
             Refresh();
+        }
+
+        private void Histogram_Click(object sender, EventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+
+            if (me.Button == MouseButtons.Right)
+            {
+                DialogResult result = saveFileDialog1.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                }
+            }
         }
     }
 }
