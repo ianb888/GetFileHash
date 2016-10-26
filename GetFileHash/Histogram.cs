@@ -267,7 +267,7 @@ namespace GetFileHash
                 // Now draw the horizontal grid lines
                 foreach (float gridLine in xGridList)
                 {
-                    Pen penGrid = new Pen(new SolidBrush(Color.Gray), _myYUnit);
+                    Pen penGrid = new Pen(new SolidBrush(Color.Gray), (_myXUnit / 4));
                     penGrid.DashStyle = DashStyle.Dash;
                     _graphics.DrawLine(penGrid,
                         new PointF(_myOffset, (gridLine * _myYUnit) + _myOffset),
@@ -284,7 +284,7 @@ namespace GetFileHash
                 }
 
                 // Draw a border around the graph area
-                Pen penLine = new Pen(new SolidBrush(Color.Black), _myYUnit);
+                Pen penLine = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
 
                 PointF topLeft = new PointF(_myOffset, _myOffset);
                 PointF bottomLeft = new PointF(_myOffset, _myOffset + (_maxYvalue * _myYUnit));
@@ -347,7 +347,11 @@ namespace GetFileHash
 
                 if (result == DialogResult.OK)
                 {
-                    // ToDo : Save the graph as a bitmap image
+                    using (Bitmap bitmap = new Bitmap(Width, Height))
+                    {
+                        DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
+                        bitmap.Save(saveFileDialog1.FileName);
+                    }
                 }
             }
             else if (me.Button == MouseButtons.Left)
