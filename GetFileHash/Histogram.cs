@@ -3,6 +3,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace GetFileHash
@@ -32,7 +33,7 @@ namespace GetFileHash
         /// <summary>
         /// The offset, in pixels, from the control margins.
         /// </summary>
-        private int _myOffset = 20;
+        private int _marginWidth = 20;
         /// <summary>
         /// The default colour to use.
         /// </summary>
@@ -53,12 +54,12 @@ namespace GetFileHash
             {
                 if (value > 0)
                 {
-                    _myOffset = value;
+                    _marginWidth = value;
                 }
             }
             get
             {
-                return _myOffset;
+                return _marginWidth;
             }
         }
 
@@ -182,7 +183,6 @@ namespace GetFileHash
             {
                 if (_myValues[i] > max)
                 {
-                    foundAt = i;
                     max = _myValues[i];
                 }
             }
@@ -194,44 +194,57 @@ namespace GetFileHash
         {
             if (_maxYvalue > 0)
             {
-                _myXUnit = (Width - (2 * _myOffset)) / _maxXvalue;
-                _myYUnit = (Height - (2 * _myOffset)) / _maxYvalue;
+                _myXUnit = (Width - (2 * _marginWidth)) / _maxXvalue;
+                _myYUnit = (Height - (2 * _marginWidth)) / _maxYvalue;
             }
         }
 
         private void Histogram_Paint(object sender, PaintEventArgs e)
         {
-            // ToDo : The Y axis doesn't properly scale the maximum value if zeroes are hidden
-
             if (_myValues != null)
             {
                 Histogram _p = (Histogram)sender;
                 Bitmap _bitmap = new Bitmap(_p.ClientSize.Width, _p.ClientSize.Height);
                 _graphics = Graphics.FromImage(_bitmap);
 
-                // Calculate the position for the labels on the X axis at 25%, 50%, 75%, and 100%
-                ArrayList xLabelsList = new ArrayList();
-                xLabelsList.Add((float)0);
-                xLabelsList.Add(_maxXvalue / 4);
-                xLabelsList.Add(_maxXvalue / 2);
-                xLabelsList.Add((_maxXvalue / 4) * 3);
-                xLabelsList.Add(_maxXvalue);
-
-                // Calculate the position for the horizontal grid
-                ArrayList xGridList = new ArrayList();
-                xGridList.Add(_maxYvalue / 4 * 3);
-                xGridList.Add(_maxYvalue / 2);
-                xGridList.Add(_maxYvalue / 4);
-
                 // The start and end points for each line are determined from the centre point of the line
                 // So therefore _myBarOffset = _myOffset + half of the bar width
-                float _myBarOffset = _myOffset + (_myXUnit / 2);
+                float _myBarOffset = _marginWidth + (_myXUnit / 2);
+
+                // Calculate the position for the labels on the X axis at 25%, 50%, 75%, and 100%
+                ArrayList xLabelsList = new ArrayList();
+                // If we are hiding zero value bytes, then we need to remember that the array indexes are shifted by 1
+                // In other words, the value of array index 63 will be the number of bytes in the file that had a value of 64
+                if (HideZeroBytes)
+                {
+                    xLabelsList.Add((float)1);
+                    xLabelsList.Add((float)Math.Round((_maxXvalue + 1) / 8, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue + 1) / 4, 0));
+                    xLabelsList.Add((float)Math.Round(((_maxXvalue + 1) / 8) * 3, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue + 1) / 2, 0));
+                    xLabelsList.Add((float)Math.Round(((_maxXvalue + 1) / 8) * 5, 0));
+                    xLabelsList.Add((float)Math.Round(((_maxXvalue + 1) / 4) * 3, 0));
+                    xLabelsList.Add((float)Math.Round(((_maxXvalue + 1) / 8) * 7, 0));
+                    xLabelsList.Add((float)Math.Round(_maxXvalue + 1, 0));
+                }
+                else
+                {
+                    xLabelsList.Add((float)0);
+                    xLabelsList.Add((float)Math.Round(_maxXvalue / 8, 0));
+                    xLabelsList.Add((float)Math.Round(_maxXvalue / 4, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue / 8) * 3, 0));
+                    xLabelsList.Add((float)Math.Round(_maxXvalue / 2, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue / 8) * 5, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue / 4) * 3, 0));
+                    xLabelsList.Add((float)Math.Round((_maxXvalue / 8) * 7, 0));
+                    xLabelsList.Add((float)Math.Round(_maxXvalue, 0));
+                }
 
                 // Loop over all of the values...
                 int intMaxX = Convert.ToInt32(_maxXvalue);
                 for (int i = 0; i <= intMaxX; i++)
                 {
-                    // Plot the coresponding index for the maximum value.
+                    // Draw the red bar for the maximum value.
                     if (_myValues[i] == _maxYvalue)
                     {
                         // The width of the pen is given by the XUnit for the control.
@@ -239,8 +252,8 @@ namespace GetFileHash
 
                         // Draw the line.
                         _graphics.DrawLine(myPen,
-                            new PointF(_myBarOffset + (i * _myXUnit), Height - _myOffset),
-                            new PointF(_myBarOffset + (i * _myXUnit), Height - _myOffset - (_myValues[Convert.ToInt32(i)] * _myYUnit)));
+                            new PointF(_myBarOffset + (i * _myXUnit), Height - _marginWidth),
+                            new PointF(_myBarOffset + (i * _myXUnit), Height - _marginWidth - (_myValues[Convert.ToInt32(i)] * _myYUnit)));
 
                         SizeF mySize = _graphics.MeasureString(i.ToString(), _myFont);
 
@@ -259,10 +272,42 @@ namespace GetFileHash
 
                         // Draw each line.
                         _graphics.DrawLine(myPen,
-                            new PointF(_myBarOffset + (i * _myXUnit), Height - _myOffset),
-                            new PointF(_myBarOffset + (i * _myXUnit), Height - _myOffset - (_myValues[Convert.ToInt32(i)] * _myYUnit)));
+                            new PointF(_myBarOffset + (i * _myXUnit), Height - _marginWidth),
+                            new PointF(_myBarOffset + (i * _myXUnit), Height - _marginWidth - (_myValues[Convert.ToInt32(i)] * _myYUnit)));
                     }
                 }
+
+                // Now draw the X axis labels
+                foreach (float tempVal in xLabelsList)
+                {
+                    float correctedVal = tempVal;
+
+                    if (_hideZeroBytes)
+                    {
+                        correctedVal = tempVal - 1;
+                    }
+
+                    string textToDisplay = tempVal.ToString();
+                    float xVal = _myBarOffset + (correctedVal * _myXUnit) - _graphics.MeasureString(textToDisplay, _myFont).Width;
+                    float yVal = Height - _myFont.Height;
+
+                    // Write the text on the X axis
+                    _graphics.DrawString(textToDisplay, _myFont, new SolidBrush(_myColor), new PointF(xVal + _myXUnit, yVal), StringFormat.GenericDefault);
+
+                    // Now, draw a short tick on the X axis to show which bar the label is indicating.
+                    Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
+                    PointF tickTop = new PointF(_myBarOffset + (correctedVal * _myXUnit), Height - _marginWidth);
+                    // There's nothing special about the magic number 600 below, its just that this is the factor that makes the tick length look good.
+                    PointF tickBottom = new PointF(_myBarOffset + (correctedVal * _myXUnit), (Height - _marginWidth) + (_myYUnit * 600));
+
+                    _graphics.DrawLine(penTick, tickTop, tickBottom);
+                }
+
+                // Calculate the position for the horizontal grid
+                ArrayList xGridList = new ArrayList();
+                xGridList.Add(_maxYvalue / 4 * 3);
+                xGridList.Add(_maxYvalue / 2);
+                xGridList.Add(_maxYvalue / 4);
 
                 // Now draw the horizontal grid lines
                 foreach (float gridLine in xGridList)
@@ -270,26 +315,17 @@ namespace GetFileHash
                     Pen penGrid = new Pen(new SolidBrush(Color.Gray), (_myXUnit / 4));
                     penGrid.DashStyle = DashStyle.Dash;
                     _graphics.DrawLine(penGrid,
-                        new PointF(_myOffset, (gridLine * _myYUnit) + _myOffset),
-                        new PointF(_myOffset + (_maxXvalue * _myXUnit) + _myXUnit, (gridLine * _myYUnit) + _myOffset));
-                }
-
-                // Now draw the X axis labels
-                foreach (float tempVal in xLabelsList)
-                {
-                    float xVal = _myBarOffset + (tempVal * _myXUnit) - _graphics.MeasureString(tempVal.ToString(), _myFont).Width;
-                    float yVal = Height - _myFont.Height;
-
-                    _graphics.DrawString(Convert.ToUInt32(tempVal).ToString(), _myFont, new SolidBrush(_myColor), new PointF(xVal + _myXUnit, yVal), StringFormat.GenericDefault);
+                        new PointF(_marginWidth, (gridLine * _myYUnit) + _marginWidth),
+                        new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, (gridLine * _myYUnit) + _marginWidth));
                 }
 
                 // Draw a border around the graph area
                 Pen penLine = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
 
-                PointF topLeft = new PointF(_myOffset, _myOffset);
-                PointF bottomLeft = new PointF(_myOffset, _myOffset + (_maxYvalue * _myYUnit));
-                PointF topRight = new PointF(_myOffset + (_maxXvalue * _myXUnit) + _myXUnit, _myOffset + _myYUnit);
-                PointF bottomRight = new PointF(_myOffset + (_maxXvalue * _myXUnit) + _myXUnit, _myOffset + (_maxYvalue * _myYUnit));
+                PointF topLeft = new PointF(_marginWidth, _marginWidth);
+                PointF bottomLeft = new PointF(_marginWidth, _marginWidth + (_maxYvalue * _myYUnit));
+                PointF topRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, _marginWidth + _myYUnit);
+                PointF bottomRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, _marginWidth + (_maxYvalue * _myYUnit));
 
                 // Left hand side
                 _graphics.DrawLine(penLine, topLeft, bottomLeft);
@@ -305,7 +341,7 @@ namespace GetFileHash
         }
 
         /// <summary>
-        /// Test wether the text will overlap with the default X axis labels.
+        /// Test whether the text will overlap with the default X axis labels.
         /// </summary>
         /// <param name="xLabelsList">The list of X axis label positions</param>
         /// <param name="labelPosition">The proposed label position for this label.</param>
@@ -343,6 +379,10 @@ namespace GetFileHash
 
             if (me.Button == MouseButtons.Right)
             {
+                saveFileDialog1.FileName = "Histogram.bmp";
+                saveFileDialog1.Filter = "Bitmap Image|*.bmp";
+                saveFileDialog1.ValidateNames = true;
+
                 DialogResult result = saveFileDialog1.ShowDialog();
 
                 if (result == DialogResult.OK)
@@ -350,7 +390,7 @@ namespace GetFileHash
                     using (Bitmap bitmap = new Bitmap(Width, Height))
                     {
                         DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
-                        bitmap.Save(saveFileDialog1.FileName);
+                        bitmap.Save(saveFileDialog1.FileName, ImageFormat.Bmp);
                     }
                 }
             }
