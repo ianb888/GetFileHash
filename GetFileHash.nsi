@@ -1,5 +1,5 @@
 ; To use this file as a template, the following items need to be changed...
-!define PROJECT_HOME "C:\Users\ibedson\Local Documents\Visual Studio 2015\Projects"
+!define PROJECT_HOME "."
 !define APPNAME "GetFileHash"
 !define PRODUCT_NAME "Calculate File Hash"
 !define REGUNINSTKEY "{f0640747-90b0-4a16-9e26-de57e9976e59}"
@@ -30,7 +30,7 @@ SetCompressor lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 !define MUI_UNABORTWARNING
-!define MUI_ICON "H:\Pictures\Icons\JNIsolutions.ico"
+!define MUI_ICON ".\JNIsolutions.ico"
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall-colorful.ico"
 !define MUI_WELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange.bmp"
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange-uninstall.bmp"
@@ -40,7 +40,7 @@ SetCompressor lzma
 ;!system 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe /m /p:FrameworkPathOverride="C:\Windows\Microsoft.NET\Framework64\v4.0.30319" /p:Configuration=Release;DeployOnBuild=True;PackageAsSingleFile=False "C:\Users\ibedson\Documents\Visual Studio 2015\Projects\${APPNAME}\${APPNAME}.sln"'
 
 ; This is probably the place where we need to insert the code to query the application version number
-!system '"${PROJECT_HOME}\${APPNAME}\ShowVersion\bin\Release\ShowVersion.exe" NSIS > "$%TEMP%\${APPNAME}-Version.nsh"'
+!system '"${PROJECT_HOME}\ShowVersion\bin\Release\ShowVersion.exe" NSIS > "$%TEMP%\${APPNAME}-Version.nsh"'
 !include "$%TEMP%\${APPNAME}-Version.nsh"
 
 VIProductVersion ${PRODUCT_VERSION}
@@ -50,7 +50,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Calculate the MD5, SHA-1 and S
 VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER_FULL}"
 ;VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2016 ${PRODUCT_PUBLISHER_FULL}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Calculate the MD5, SHA-1 and SHA-256 hashes for any file."
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
 
 !define MUI_WELCOMEPAGE_TITLE "${PRODUCT_NAME}$\r$\nVersion ${PRODUCT_VERSION}"
@@ -84,10 +84,10 @@ RequestExecutionLevel admin
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "${PROJECT_HOME}\${APPNAME}\${APPNAME}\bin\Release\${APPNAME}.exe"
-  File "${PROJECT_HOME}\${APPNAME}\${APPNAME}\bin\Release\${APPNAME}.exe.config"
-  File "${PROJECT_HOME}\${APPNAME}\${APPNAME}\bin\Release\RestSharp.dll"
-  File "${PROJECT_HOME}\${APPNAME}\${APPNAME}\bin\Release\VirusTotal.NET.dll"
+  File "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe"
+  File "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe.config"
+  File "${PROJECT_HOME}\${APPNAME}\bin\Release\RestSharp.dll"
+  File "${PROJECT_HOME}\${APPNAME}\bin\Release\VirusTotal.NET.dll"
 
   ; Check if this is a new installation, or an upgrade
   ReadRegStr $R0 HKCU "${PRODUCT_DIR_REGKEY}" ""

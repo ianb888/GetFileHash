@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFileHash", "GetFileHash\GetFileHash.csproj", "{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}"
 EndProject
@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E25C006-56F1-49E4-AD94-32C7F1CF36BD}"
 	ProjectSection(SolutionItems) = preProject
 		GetFileHash.nsi = GetFileHash.nsi
+		JNIsolutions.ico = JNIsolutions.ico
 	EndProjectSection
 EndProject
 Global
