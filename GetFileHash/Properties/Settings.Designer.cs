@@ -22,5 +22,18 @@ namespace GetFileHash.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.SettingsProviderAttribute(typeof(GetFileHash.PortableSettingsProvider))]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool HideZero {
+            get {
+                return ((bool)(this["HideZero"]));
+            }
+            set {
+                this["HideZero"] = value;
+            }
+        }
     }
 }

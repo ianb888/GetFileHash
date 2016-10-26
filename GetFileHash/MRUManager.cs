@@ -59,7 +59,7 @@ namespace GetFileHash
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.Error.WriteLine(ex.ToString());
             }
 
             OnClearRecentFilesClick?.Invoke(obj, evt);
@@ -82,7 +82,7 @@ namespace GetFileHash
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Cannot open recent files registry key:\n" + ex.ToString());
+                Console.Error.WriteLine("Cannot open recent files registry key:\n" + ex.ToString());
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace GetFileHash
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.Error.WriteLine(ex.ToString());
             }
             _refreshRecentFilesMenu();
         }
@@ -161,7 +161,7 @@ namespace GetFileHash
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.Error.WriteLine(ex.ToString());
             }
             _refreshRecentFilesMenu();
         }

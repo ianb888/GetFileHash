@@ -33,6 +33,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.closeButton = new System.Windows.Forms.Button();
+            this.ignoreZeroCheckbox = new System.Windows.Forms.CheckBox();
             this.histogram1 = new GetFileHash.Histogram();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -55,6 +56,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.ignoreZeroCheckbox);
             this.splitContainer1.Panel2.Controls.Add(this.textBox1);
             this.splitContainer1.Panel2.Controls.Add(this.label1);
             this.splitContainer1.Panel2.Controls.Add(this.closeButton);
@@ -69,7 +71,7 @@
             this.textBox1.Location = new System.Drawing.Point(100, 13);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(300, 20);
+            this.textBox1.Size = new System.Drawing.Size(200, 20);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "Calculated Entropy";
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -96,11 +98,25 @@
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
             // 
+            // ignoreZeroCheckbox
+            // 
+            this.ignoreZeroCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ignoreZeroCheckbox.AutoSize = true;
+            this.ignoreZeroCheckbox.Location = new System.Drawing.Point(434, 15);
+            this.ignoreZeroCheckbox.Name = "ignoreZeroCheckbox";
+            this.ignoreZeroCheckbox.Size = new System.Drawing.Size(93, 17);
+            this.ignoreZeroCheckbox.TabIndex = 4;
+            this.ignoreZeroCheckbox.Text = "Ignore 0 bytes";
+            this.ignoreZeroCheckbox.UseVisualStyleBackColor = true;
+            this.ignoreZeroCheckbox.CheckedChanged += new System.EventHandler(this.ignoreZero_CheckedChanged);
+            // 
             // histogram1
             // 
+            this.histogram1.BackColor = System.Drawing.SystemColors.Window;
             this.histogram1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.histogram1.DisplayColor = System.Drawing.Color.Black;
             this.histogram1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.histogram1.HideZeroBytes = false;
             this.histogram1.Location = new System.Drawing.Point(0, 0);
             this.histogram1.MinimumSize = new System.Drawing.Size(206, 174);
             this.histogram1.Name = "histogram1";
@@ -135,5 +151,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private Histogram histogram1;
+        private System.Windows.Forms.CheckBox ignoreZeroCheckbox;
     }
 }

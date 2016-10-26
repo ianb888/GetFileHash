@@ -339,7 +339,7 @@
         private System.Windows.Forms.PictureBox trafficLight;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Timer trafficLightTimer;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        //private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ContextMenuStrip recentFilesMenuStrip;
         public System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.Button VirusTotalButton;
