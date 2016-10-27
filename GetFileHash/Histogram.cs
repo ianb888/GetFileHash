@@ -177,7 +177,6 @@ namespace GetFileHash
         private long getMaxY()
         {
             long max = 0;
-            int foundAt = 0;
 
             for (int i = 0; i < _myValues.Length; i++)
             {
@@ -397,6 +396,12 @@ namespace GetFileHash
             else if (me.Button == MouseButtons.Left)
             {
                 // ToDo : Figure out which bar was clicked on and display the value
+                int mouseX = me.X;
+
+                if (mouseX < _marginWidth)
+                {
+                    mouseX = _marginWidth + (_myXUnit / 2);
+                }
             }
         }
     }
