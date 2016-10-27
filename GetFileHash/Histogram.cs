@@ -296,8 +296,8 @@ namespace GetFileHash
                     // Now, draw a short tick on the X axis to show which bar the label is indicating.
                     Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
                     PointF tickTop = new PointF(_myBarOffset + (correctedVal * _myXUnit), Height - _marginWidth);
-                    // There's nothing special about the magic number 600 below, its just that this is the factor that makes the tick length look good.
-                    PointF tickBottom = new PointF(_myBarOffset + (correctedVal * _myXUnit), (Height - _marginWidth) + (_myYUnit * 600));
+                    float tickLength = Height / 150;
+                    PointF tickBottom = new PointF(_myBarOffset + (correctedVal * _myXUnit), (Height - _marginWidth) + tickLength);
 
                     _graphics.DrawLine(penTick, tickTop, tickBottom);
                 }
@@ -391,16 +391,6 @@ namespace GetFileHash
                         DrawToBitmap(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height));
                         bitmap.Save(saveFileDialog1.FileName, ImageFormat.Bmp);
                     }
-                }
-            }
-            else if (me.Button == MouseButtons.Left)
-            {
-                // ToDo : Figure out which bar was clicked on and display the value
-                int mouseX = me.X;
-
-                if (mouseX < _marginWidth)
-                {
-                    mouseX = _marginWidth + (_myXUnit / 2);
                 }
             }
         }

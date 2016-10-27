@@ -12,7 +12,7 @@
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define FOLDERID_UserProgramFiles "{89bea731-9b47-4dcd-be52-dc0197e47b98}"
 !define KF_FLAG_CREATE 0x00008000
-!define LANG_ENGLISH "1033-English"
+;!define LANG_ENGLISH "English"
 !ifndef USERPROFILE
 !define USERPROFILE "$%USERPROFILE%"
 !endif
@@ -44,14 +44,14 @@ SetCompressor lzma
 !include "$%TEMP%\${APPNAME}-Version.nsh"
 
 VIProductVersion ${PRODUCT_VERSION}
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${PRODUCT_NAME}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "${PRODUCT_VERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "Comments" "Calculate the MD5, SHA-1 and SHA-256 hashes for any file."
-VIAddVersionKey /LANG=${LANG_ENGLISH} "CompanyName" "${PRODUCT_PUBLISHER_FULL}"
+VIAddVersionKey "ProductName" "${PRODUCT_NAME}"
+VIAddVersionKey "ProductVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey "Comments" "Calculate the MD5, SHA-1 and SHA-256 hashes for any file."
+VIAddVersionKey "CompanyName" "${PRODUCT_PUBLISHER_FULL}"
 ;VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Test Application is a trademark of Fake company"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© 2016 ${PRODUCT_PUBLISHER_FULL}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${PRODUCT_NAME}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${PRODUCT_VERSION}"
+VIAddVersionKey "LegalCopyright" "© 2016 ${PRODUCT_PUBLISHER_FULL}"
+VIAddVersionKey "FileDescription" "${PRODUCT_NAME}"
+VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 
 !define MUI_WELCOMEPAGE_TITLE "${PRODUCT_NAME}$\r$\nVersion ${PRODUCT_VERSION}"
 
