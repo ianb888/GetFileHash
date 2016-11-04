@@ -34,6 +34,7 @@ namespace GetFileHash
         /// The offset, in pixels, from the control margins.
         /// </summary>
         private int _marginWidth = 20;
+        private int _leftMargin = 100;
         /// <summary>
         /// The default colour to use.
         /// </summary>
@@ -60,6 +61,23 @@ namespace GetFileHash
             get
             {
                 return _marginWidth;
+            }
+        }
+
+        [Category("Histogram Options")]
+        [Description("The width of the left margin")]
+        public int LeftMargin
+        {
+            set
+            {
+                if (value > 0)
+                {
+                    _leftMargin = value;
+                }
+            }
+            get
+            {
+                return _leftMargin;
             }
         }
 
@@ -193,7 +211,7 @@ namespace GetFileHash
         {
             if (_maxYvalue > 0)
             {
-                _myXUnit = (Width - (2 * _marginWidth)) / _maxXvalue;
+                _myXUnit = (Width - (2 * _marginWidth) - _leftMargin) / _maxXvalue;
                 _myYUnit = (Height - (2 * _marginWidth)) / _maxYvalue;
             }
         }
@@ -208,7 +226,7 @@ namespace GetFileHash
 
                 // The start and end points for each line are determined from the centre point of the line
                 // So therefore _myBarOffset = _myOffset + half of the bar width
-                float _myBarOffset = _marginWidth + (_myXUnit / 2);
+                float _myBarOffset = _leftMargin + _marginWidth + (_myXUnit / 2);
 
                 // Calculate the position for the labels on the X axis at 25%, 50%, 75%, and 100%
                 ArrayList xLabelsList = new ArrayList();
@@ -303,35 +321,56 @@ namespace GetFileHash
                 }
 
                 // Calculate the position for the horizontal grid
-                ArrayList xGridList = new ArrayList();
-                xGridList.Add(_maxYvalue / 4 * 3);
-                xGridList.Add(_maxYvalue / 2);
-                xGridList.Add(_maxYvalue / 4);
+                ArrayList horizGridList = new ArrayList();
+                horizGridList.Add(_maxYvalue);
+                horizGridList.Add(_maxYvalue / 4 * 3);
+                horizGridList.Add(_maxYvalue / 2);
+                horizGridList.Add(_maxYvalue / 4);
+                horizGridList.Add((float)0);
+
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Near;
+                stringFormat.LineAlignment = StringAlignment.Center;
 
                 // Now draw the horizontal grid lines
-                foreach (float gridLine in xGridList)
+                for (int iteration = 0; iteration < horizGridList.Count; iteration++)
                 {
-                    Pen penGrid = new Pen(new SolidBrush(Color.Gray), (_myXUnit / 4));
-                    penGrid.DashStyle = DashStyle.Dash;
-                    _graphics.DrawLine(penGrid,
-                        new PointF(_marginWidth, (gridLine * _myYUnit) + _marginWidth),
-                        new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, (gridLine * _myYUnit) + _marginWidth));
+                    float gridLine = (float)horizGridList[iteration];
+                    var valueToDisplay = (Math.Round((float)horizGridList[iteration], 0) - _maxYvalue) * -1;
+                    string labelText =  valueToDisplay.ToString();
+
+                    // Only draw the intermediate lines, not the minumum and maximum lines
+                    if ((gridLine != 0) && (gridLine != _maxYvalue))
+                    {
+                        Pen penGrid = new Pen(new SolidBrush(Color.Gray), (_myXUnit / 4));
+                        penGrid.DashStyle = DashStyle.Dash;
+                        _graphics.DrawLine(penGrid,
+                            new PointF(_marginWidth + _leftMargin, (gridLine * _myYUnit) + _marginWidth),
+                            new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit + _leftMargin, (gridLine * _myYUnit) + _marginWidth));
+                    }
+
+                    // Now add the text label
+                    float xVal = (_leftMargin - _graphics.MeasureString(labelText, _myFont).Width) + (_marginWidth / 2);
+                    float yVal = (gridLine * _myYUnit) + _marginWidth;
+
+                    // Write the text on the X axis
+                    _graphics.DrawString(labelText, _myFont, new SolidBrush(_myColor), new PointF(xVal, yVal), stringFormat);
                 }
 
                 // Draw a border around the graph area
                 Pen penLine = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
 
-                PointF topLeft = new PointF(_marginWidth, _marginWidth);
-                PointF bottomLeft = new PointF(_marginWidth, _marginWidth + (_maxYvalue * _myYUnit));
-                PointF topRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, _marginWidth + _myYUnit);
-                PointF bottomRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit, _marginWidth + (_maxYvalue * _myYUnit));
+                PointF topLeft = new PointF(_marginWidth + _leftMargin, _marginWidth);
+                PointF botLeft = new PointF(_marginWidth + _leftMargin, _marginWidth + (_maxYvalue * _myYUnit));
+                PointF topRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit + _leftMargin, _marginWidth);
+                PointF botRight = new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit + _leftMargin, _marginWidth + (_maxYvalue * _myYUnit));
 
                 // Left hand side
-                _graphics.DrawLine(penLine, topLeft, bottomLeft);
+                _graphics.DrawLine(penLine, topLeft, botLeft);
                 // Bottom edge
-                _graphics.DrawLine(penLine, bottomLeft, bottomRight);
+                _graphics.DrawLine(penLine, botLeft, botRight);
                 // Right hand side
-                _graphics.DrawLine(penLine, topRight, bottomRight);
+                _graphics.DrawLine(penLine, topRight, botRight);
                 // Top edge
                 _graphics.DrawLine(penLine, topLeft, topRight);
 

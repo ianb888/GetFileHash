@@ -13,24 +13,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		GetFileHash.nsi = GetFileHash.nsi
 		JNIsolutions.ico = JNIsolutions.ico
+		obfuscar.xml = obfuscar.xml
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Obfuscated|Any CPU = Obfuscated|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Obfuscated|Any CPU.ActiveCfg = Obfuscated|Any CPU
+		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Obfuscated|Any CPU.Build.0 = Obfuscated|Any CPU
 		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83232A90-846C-45B2-93B1-CEE29BC19908}.Obfuscated|Any CPU.ActiveCfg = Obfuscated|Any CPU
+		{83232A90-846C-45B2-93B1-CEE29BC19908}.Obfuscated|Any CPU.Build.0 = Obfuscated|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Obfuscated|Any CPU.ActiveCfg = Obfuscated|Any CPU
+		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Obfuscated|Any CPU.Build.0 = Obfuscated|Any CPU
 		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
