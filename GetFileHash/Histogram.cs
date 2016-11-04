@@ -42,7 +42,7 @@ namespace GetFileHash
         /// <summary>
         /// The default font to use.
         /// </summary>
-        private Font _myFont = new Font("Tahoma", 10);
+        private Font _myFont = new Font("Verdana", 10);
         private bool _hideZeroBytes = false;
         //private Bitmap bitmap;
         private Graphics _graphics;
@@ -294,6 +294,10 @@ namespace GetFileHash
                     }
                 }
 
+                StringFormat xAxisFormat = new StringFormat();
+                xAxisFormat.Alignment = StringAlignment.Center;
+                xAxisFormat.LineAlignment = StringAlignment.Near;
+
                 // Now draw the X axis labels
                 foreach (float tempVal in xLabelsList)
                 {
@@ -305,11 +309,11 @@ namespace GetFileHash
                     }
 
                     string textToDisplay = tempVal.ToString();
-                    float xVal = _myBarOffset + (correctedVal * _myXUnit) - _graphics.MeasureString(textToDisplay, _myFont).Width;
+                    float xVal = _myBarOffset + (correctedVal * _myXUnit) - (_graphics.MeasureString(textToDisplay, _myFont).Width / 2);
                     float yVal = Height - _myFont.Height;
 
                     // Write the text on the X axis
-                    _graphics.DrawString(textToDisplay, _myFont, new SolidBrush(_myColor), new PointF(xVal + _myXUnit, yVal), StringFormat.GenericDefault);
+                    _graphics.DrawString(textToDisplay, _myFont, new SolidBrush(_myColor), new PointF(xVal + _myXUnit, yVal), xAxisFormat);
 
                     // Now, draw a short tick on the X axis to show which bar the label is indicating.
                     Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
@@ -328,16 +332,16 @@ namespace GetFileHash
                 horizGridList.Add(_maxYvalue / 4);
                 horizGridList.Add((float)0);
 
-                StringFormat stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Near;
-                stringFormat.LineAlignment = StringAlignment.Center;
+                StringFormat yAxisFormat = new StringFormat();
+                yAxisFormat.Alignment = StringAlignment.Near;
+                yAxisFormat.LineAlignment = StringAlignment.Center;
 
                 // Now draw the horizontal grid lines
                 for (int iteration = 0; iteration < horizGridList.Count; iteration++)
                 {
                     float gridLine = (float)horizGridList[iteration];
                     var valueToDisplay = (Math.Round((float)horizGridList[iteration], 0) - _maxYvalue) * -1;
-                    string labelText =  valueToDisplay.ToString();
+                    string labelText =  valueToDisplay.ToString("N0");
 
                     // Only draw the intermediate lines, not the minumum and maximum lines
                     if ((gridLine != 0) && (gridLine != _maxYvalue))
@@ -354,7 +358,15 @@ namespace GetFileHash
                     float yVal = (gridLine * _myYUnit) + _marginWidth;
 
                     // Write the text on the X axis
-                    _graphics.DrawString(labelText, _myFont, new SolidBrush(_myColor), new PointF(xVal, yVal), stringFormat);
+                    _graphics.DrawString(labelText, _myFont, new SolidBrush(_myColor), new PointF(xVal, yVal), yAxisFormat);
+
+                    // Now, draw a short tick on the Y axis to show which bar the label is indicating.
+                    Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
+                    float tickLength = _myXUnit;
+                    PointF tickLeft = new PointF(_marginWidth + _leftMargin - tickLength, (gridLine * _myYUnit) + _marginWidth);
+                    PointF tickRight = new PointF(_marginWidth + _leftMargin, (gridLine * _myYUnit) + _marginWidth);
+
+                    _graphics.DrawLine(penTick, tickLeft, tickRight);
                 }
 
                 // Draw a border around the graph area
