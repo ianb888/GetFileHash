@@ -14,6 +14,7 @@ namespace GetFileHash
         /// An array of all values which need to be displayed on the graph.
         /// </summary>
         private long[] _myValues;
+        private long _myAverage = 0;
         /// <summary>
         /// The maximum value that needs to be displayed on the X axis.
         /// </summary>
@@ -34,7 +35,7 @@ namespace GetFileHash
         /// The offset, in pixels, from the control margins.
         /// </summary>
         private int _marginWidth = 20;
-        private int _leftMargin = 100;
+        private int _leftMargin = 60;
         /// <summary>
         /// The default colour to use.
         /// </summary>
@@ -145,6 +146,13 @@ namespace GetFileHash
                     _myValues[myByte] += 1;
                 }
             }
+
+            // Calculate the average value
+            foreach (long total in _myValues)
+            {
+                _myAverage += total;
+            }
+            _myAverage = _myAverage / _myValues.LongLength;
 
             // Determine the largest value to display on the X axis.
             _maxXvalue = getMaxX();
@@ -318,7 +326,7 @@ namespace GetFileHash
                     // Now, draw a short tick on the X axis to show which bar the label is indicating.
                     Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
                     PointF tickTop = new PointF(_myBarOffset + (correctedVal * _myXUnit), Height - _marginWidth);
-                    float tickLength = Height / 150;
+                    float tickLength = Height / (float)100 * (float)0.5;
                     PointF tickBottom = new PointF(_myBarOffset + (correctedVal * _myXUnit), (Height - _marginWidth) + tickLength);
 
                     _graphics.DrawLine(penTick, tickTop, tickBottom);
@@ -327,9 +335,13 @@ namespace GetFileHash
                 // Calculate the position for the horizontal grid
                 ArrayList horizGridList = new ArrayList();
                 horizGridList.Add(_maxYvalue);
+                horizGridList.Add(_maxYvalue / 8 * 7);
                 horizGridList.Add(_maxYvalue / 4 * 3);
+                horizGridList.Add(_maxYvalue / 8 * 5);
                 horizGridList.Add(_maxYvalue / 2);
+                horizGridList.Add(_maxYvalue / 8 * 3);
                 horizGridList.Add(_maxYvalue / 4);
+                horizGridList.Add(_maxYvalue / 8 * 1);
                 horizGridList.Add((float)0);
 
                 StringFormat yAxisFormat = new StringFormat();
@@ -368,6 +380,13 @@ namespace GetFileHash
 
                     _graphics.DrawLine(penTick, tickLeft, tickRight);
                 }
+
+                // Now draw a line to show the average value
+                Pen averagePen = new Pen(new SolidBrush(Color.Green), (_myXUnit / 4));
+                averagePen.DashStyle = DashStyle.DashDot;
+                _graphics.DrawLine(averagePen,
+                    new PointF(_marginWidth + _leftMargin, (_myAverage * _myYUnit) + _marginWidth),
+                    new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit + _leftMargin, (_myAverage * _myYUnit) + _marginWidth));
 
                 // Draw a border around the graph area
                 Pen penLine = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
