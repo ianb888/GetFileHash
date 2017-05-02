@@ -218,9 +218,9 @@ namespace GetFileHash
                     retVal = BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", string.Empty);
                 }
             }
-            catch
+            catch (Exception eX)
             {
-
+                MessageBox.Show(eX.GetType().ToString() + ": " + eX.Message, eX.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return retVal;
