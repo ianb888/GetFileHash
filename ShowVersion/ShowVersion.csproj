@@ -36,8 +36,8 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\application.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dotfuscated|AnyCPU'">
-    <OutputPath>bin\Dotfuscated\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Obfuscated|AnyCPU'">
+    <OutputPath>bin\Obfuscated\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

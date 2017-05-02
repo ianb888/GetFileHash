@@ -36,8 +36,8 @@
   <PropertyGroup>
     <ApplicationIcon>application.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dotfuscated|AnyCPU'">
-    <OutputPath>bin\Dotfuscated\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Obfuscated|AnyCPU'">
+    <OutputPath>bin\Obfuscator_Input\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -137,9 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="application.ico" />
-    <Content Include="StudioDotfuscator.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\traffic-yellow.bmp" />
     <None Include="Resources\traffic-red.bmp" />
     <None Include="Resources\traffic-off.bmp" />
