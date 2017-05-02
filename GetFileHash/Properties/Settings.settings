@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GetFileHash.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="HideZero" Provider="GetFileHash.PortableSettingsProvider" Type="System.Boolean" Scope="User">
+    <Setting Name="HideZero" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

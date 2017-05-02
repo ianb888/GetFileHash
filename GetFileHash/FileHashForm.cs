@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using GetFileHash.Properties;
 using Microsoft.Win32;
 using VirusTotalNET;
 using VirusTotalNET.Objects;
@@ -34,6 +36,14 @@ namespace GetFileHash
         public FileHashForm()
         {
             InitializeComponent();
+
+            // This code fixes the bug whereby the Form Designer gets corrupted after adding a custom settings provider.
+            PortableSettingsProvider portableSettingsProvider = new PortableSettingsProvider();
+            Settings.Default.Providers.Add(portableSettingsProvider);
+            foreach (SettingsProperty property in Settings.Default.Properties)
+            {
+                property.Provider = portableSettingsProvider;
+            }
 
             try
             {

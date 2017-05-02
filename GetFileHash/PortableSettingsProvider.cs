@@ -141,7 +141,7 @@ namespace GetFileHash
 #if DEBUG
             return ApplicationName + ".debug.config";
 #else
-            return ApplicationName + ".exe.config";
+            return ApplicationName + ".config";
 #endif
         }
 
