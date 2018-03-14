@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using GetFileHash.Properties;
 using Microsoft.Win32;
 using VirusTotalNET;
-using VirusTotalNET.Objects;
+using VirusTotalNET.Results;
 
 namespace GetFileHash
 {
@@ -286,17 +286,17 @@ namespace GetFileHash
             return success;
         }
 
-        private void VirusTotalButton_Click(object sender, EventArgs e)
+        private async void VirusTotalButton_Click(object sender, EventArgs e)
         {
             fileNamePath = filePathBox.Text;
 
             if (File.Exists(fileNamePath))
-            {                
+            {
                 FileInfo fileInfo = new FileInfo(fileNamePath);
 
                 // Check if the file has been scanned previously
-                fileReport = virusTotal.GetFileReport(fileInfo);
-                bool hasBeenScannedBefore = fileReport.ResponseCode == ReportResponseCode.Present;
+                fileReport = await virusTotal.GetFileReportAsync(fileInfo);
+                bool hasBeenScannedBefore = fileReport.ResponseCode == VirusTotalNET.ResponseCodes.FileReportResponseCode.Present;
 
                 // If the file has already been scanned, then the results are embedded inside of the report
                 if (hasBeenScannedBefore)
@@ -320,7 +320,7 @@ namespace GetFileHash
                 }
                 else
                 {
-                    ScanResult scanResult = virusTotal.ScanFile(fileInfo);
+                    ScanResult scanResult = await virusTotal.ScanFileAsync(fileInfo);
                     vtMessageTextBox.Text = scanResult.VerboseMsg;
                 }
             }
