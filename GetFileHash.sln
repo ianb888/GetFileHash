@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetFileHash", "GetFileHash\GetFileHash.csproj", "{B8A91EF1-901F-43B2-B3AE-885BCF796DB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShowVersion", "ShowVersion\ShowVersion.csproj", "{83232A90-846C-45B2-93B1-CEE29BC19908}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirusTotal.NET", "..\VirusTotal.NET\VirusTotal.NET\VirusTotal.NET.csproj", "{F171FB32-C071-4A38-BA05-61DD8B73723A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E25C006-56F1-49E4-AD94-32C7F1CF36BD}"
 	ProjectSection(SolutionItems) = preProject
@@ -35,14 +33,11 @@ Global
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Obfuscated|Any CPU.Build.0 = Obfuscated|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83232A90-846C-45B2-93B1-CEE29BC19908}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Obfuscated|Any CPU.ActiveCfg = Dotfuscated|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Obfuscated|Any CPU.Build.0 = Dotfuscated|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F171FB32-C071-4A38-BA05-61DD8B73723A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A752A2F-F947-4543-B99F-B68F589BD596}
 	EndGlobalSection
 EndGlobal
