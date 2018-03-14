@@ -86,7 +86,7 @@ Section "MainSection" SEC01
   SetOverwrite ifnewer
   File "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe"
   File "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe.config"
-  File "${PROJECT_HOME}\${APPNAME}\bin\Release\RestSharp.dll"
+  File "${PROJECT_HOME}\${APPNAME}\bin\Release\Newtonsoft.Json.dll"
   File "${PROJECT_HOME}\${APPNAME}\bin\Release\VirusTotal.NET.dll"
 
   ; Check if this is a new installation, or an upgrade
@@ -94,7 +94,7 @@ Section "MainSection" SEC01
   StrCmp $R0 "" install continue
 
   install:
-  Push "$INSTDIR\RestSharp.dll"
+  Push "$INSTDIR\Newtonsoft.Json.dll"
   Call AddSharedDLL
   Push "$INSTDIR\VirusTotal.NET.dll"
   Call AddSharedDLL
@@ -116,12 +116,12 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\Uninst${APPNAME}.exe"
   ; Optional Values (May not work on older Windows versions)
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${APPNAME}.exe"
+  WriteRegExpandStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\${APPNAME}.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER_FULL}"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" "1"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" "1"
+  WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoModify" "1"
+  WriteRegDWORD ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "NoRepair" "1"
   CreateShortCut "$SMPROGRAMS\${PRODUCT_PUBLISHER}\${PRODUCT_NAME}.lnk" "$INSTDIR\${APPNAME}.exe"
   ; Create an Uninstall icon on the Start Menu
 ;  CreateShortCut "$SMPROGRAMS\${PRODUCT_PUBLISHER}\Uninstall ${PRODUCT_NAME}.lnk" "$INSTDIR\Uninst${APPNAME}.exe"
@@ -224,7 +224,7 @@ Section Uninstall
   ; Make the appropriate registry changes when we remove an application which uses
   ; a shared DLL. If this is the last application that uses the DLL, then we can
   ; also remove it as well.
-  Push "$INSTDIR\RestSharp.dll"
+  Push "$INSTDIR\Newtonsoft.Json.dll"
   Call un.RemoveSharedDLL
   Push "$INSTDIR\VirusTotal.NET.dll"
   Call un.RemoveSharedDLL
