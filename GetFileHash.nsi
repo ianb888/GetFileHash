@@ -36,9 +36,6 @@ SetCompressor lzma
 !define MUI_UNWELCOMEFINISHPAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Wizard\orange-uninstall.bmp"
 !define MUI_HEADERIMAGE_BITMAP "${NSISDIR}\Contrib\Graphics\Header\orange.bmp"
 
-; Compile the latest version of the source code
-;!system 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319\MSBuild.exe /m /p:FrameworkPathOverride="C:\Windows\Microsoft.NET\Framework64\v4.0.30319" /p:Configuration=Release;DeployOnBuild=True;PackageAsSingleFile=False "C:\Users\ibedson\Documents\Visual Studio 2015\Projects\${APPNAME}\${APPNAME}.sln"'
-
 ; This is probably the place where we need to insert the code to query the application version number
 !system '"${PROJECT_HOME}\ShowVersion\bin\Release\ShowVersion.exe" NSIS > "$%TEMP%\${APPNAME}-Version.nsh"'
 !include "$%TEMP%\${APPNAME}-Version.nsh"
@@ -78,6 +75,10 @@ InstallDirRegKey ${PRODUCT_INST_ROOT_KEY} "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails hide
 ShowUnInstDetails show
 BrandingText "${PRODUCT_PUBLISHER_FULL}"
+
+!system '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 6171a510727f044a716473f3a3e0482a459cd8d3 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe"'
+
+!finalize '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 6171a510727f044a716473f3a3e0482a459cd8d3 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "%1"'
 
 RequestExecutionLevel admin
 
