@@ -96,7 +96,7 @@
             this.closeButton.TabIndex = 0;
             this.closeButton.Text = "Close";
             this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            this.closeButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // ignoreZeroCheckbox
             // 
@@ -108,7 +108,7 @@
             this.ignoreZeroCheckbox.TabIndex = 4;
             this.ignoreZeroCheckbox.Text = "Ignore 0 bytes";
             this.ignoreZeroCheckbox.UseVisualStyleBackColor = true;
-            this.ignoreZeroCheckbox.CheckedChanged += new System.EventHandler(this.ignoreZero_CheckedChanged);
+            this.ignoreZeroCheckbox.CheckedChanged += new System.EventHandler(this.IgnoreZero_CheckedChanged);
             // 
             // histogram1
             // 

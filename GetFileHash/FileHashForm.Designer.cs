@@ -66,7 +66,7 @@
             this.openFileDialog.Filter = "All files|*.*";
             this.openFileDialog.SupportMultiDottedExtensions = true;
             this.openFileDialog.Title = "Choose the file to open";
-            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog_FileOk);
+            this.openFileDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenFileDialog_FileOk);
             // 
             // chooseFileButton
             // 
@@ -78,7 +78,7 @@
             this.chooseFileButton.TabIndex = 0;
             this.chooseFileButton.Text = "Choose a file";
             this.chooseFileButton.UseVisualStyleBackColor = true;
-            this.chooseFileButton.Click += new System.EventHandler(this.chooseFileButton_Click);
+            this.chooseFileButton.Click += new System.EventHandler(this.ChooseFileButton_Click);
             // 
             // recentFilesMenuStrip
             // 
@@ -100,7 +100,7 @@
             this.filePathBox.Name = "filePathBox";
             this.filePathBox.Size = new System.Drawing.Size(741, 20);
             this.filePathBox.TabIndex = 1;
-            this.filePathBox.TextChanged += new System.EventHandler(this.filePathBox_TextChanged);
+            this.filePathBox.TextChanged += new System.EventHandler(this.FilePathBox_TextChanged);
             // 
             // groupBox1
             // 
@@ -139,7 +139,7 @@
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.copyToolStripMenuItem.Text = "Copy";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // label3
             // 
@@ -199,7 +199,7 @@
             this.exitButton.TabIndex = 3;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = true;
-            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
+            this.exitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
             // groupBox2
             // 
@@ -233,7 +233,7 @@
             // trafficLightTimer
             // 
             this.trafficLightTimer.Interval = 750;
-            this.trafficLightTimer.Tick += new System.EventHandler(this.trafficLightTimer_Tick);
+            this.trafficLightTimer.Tick += new System.EventHandler(this.TrafficLightTimer_Tick);
             // 
             // VirusTotalButton
             // 
@@ -257,7 +257,7 @@
             this.resultsButton.TabIndex = 8;
             this.resultsButton.Text = "Show Detailed Results";
             this.resultsButton.UseVisualStyleBackColor = true;
-            this.resultsButton.Click += new System.EventHandler(this.resultsButton_Click);
+            this.resultsButton.Click += new System.EventHandler(this.ResultsButton_Click);
             // 
             // showHistogramButton
             // 
@@ -269,7 +269,7 @@
             this.showHistogramButton.TabIndex = 9;
             this.showHistogramButton.Text = "Show File Analysis";
             this.showHistogramButton.UseVisualStyleBackColor = true;
-            this.showHistogramButton.Click += new System.EventHandler(this.showHistogramButton_Click);
+            this.showHistogramButton.Click += new System.EventHandler(this.ShowHistogramButton_Click);
             // 
             // trafficLight
             // 

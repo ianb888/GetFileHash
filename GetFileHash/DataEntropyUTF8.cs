@@ -15,14 +15,8 @@ namespace GetFileHash
         double overalEntropy;
         // Used for preventing unnecessary processing
         bool isDirty;
-        // Bytes of data processed
-        int dataSize;
 
-        public int DataSampleSize
-        {
-            get { return dataSize; }
-            private set { dataSize = value; }
-        }
+        public int DataSampleSize { get; private set; }
 
         public int UniqueSymbols
         {
@@ -116,7 +110,7 @@ namespace GetFileHash
                 // Prabability = Freq of symbol / # symbols examined thus far
                 probabilityDict.Add(
                     entry.Key,
-                    (double)distributionDict[entry.Key] / dataSize
+                    (double)distributionDict[entry.Key] / DataSampleSize
                 );
             }
 
@@ -138,7 +132,7 @@ namespace GetFileHash
             }
 
             isDirty = true;
-            dataSize += chunk.Length;
+            DataSampleSize += chunk.Length;
 
             foreach (byte bite in chunk)
             {
@@ -167,7 +161,7 @@ namespace GetFileHash
         {
             isDirty = true;
             overalEntropy = 0;
-            dataSize = 0;
+            DataSampleSize = 0;
             distributionDict = new SortedList<byte, int>();
             probabilityDict = new SortedList<byte, double>();
         }

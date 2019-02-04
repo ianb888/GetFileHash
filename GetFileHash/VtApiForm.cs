@@ -30,21 +30,21 @@ namespace GetFileHash
             }
         }
 
-        private void okButton_Click(object sender, EventArgs e)
+        private void OkButton_Click(object sender, EventArgs e)
         {
             if ((vtApiKey != apiBox.Text) && (!string.IsNullOrWhiteSpace(apiBox.Text)))
             {
-                storeKey(apiBox.Text);
+                StoreKey(apiBox.Text);
             }
             Close();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void storeKey(string keyVal)
+        private void StoreKey(string keyVal)
         {
             try
             {

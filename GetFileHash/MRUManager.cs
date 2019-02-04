@@ -7,11 +7,11 @@ namespace GetFileHash
     public class MRUManager
     {
         #region Private variables
-        private string NameOfProgram;
-        private string SubKeyName;
+        private readonly string NameOfProgram;
+        private readonly string SubKeyName;
+        private readonly Action<object, EventArgs> OnRecentFileClick;
+        private readonly Action<object, EventArgs> OnClearRecentFilesClick;
         private ToolStripMenuItem ParentMenuItem;
-        private Action<object, EventArgs> OnRecentFileClick;
-        private Action<object, EventArgs> OnClearRecentFilesClick;
         #endregion
 
         /// <summary>

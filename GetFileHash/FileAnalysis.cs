@@ -25,12 +25,12 @@ namespace GetFileHash
             }
         }
 
-        private void closeButton_Click(object sender, EventArgs e)
+        private void CloseButton_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void ignoreZero_CheckedChanged(object sender, EventArgs e)
+        private void IgnoreZero_CheckedChanged(object sender, EventArgs e)
         {
             if (ignoreZeroCheckbox.Checked)
             {

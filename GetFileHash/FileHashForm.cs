@@ -48,7 +48,7 @@ namespace GetFileHash
             try
             {
                 // First, try to get the API key from the registry...
-                var apiKey = checkRegistry();
+                var apiKey = CheckRegistry();
 
                 // Nothing found? Then ask for it to be entered...
                 if (apiKey == null)
@@ -59,7 +59,7 @@ namespace GetFileHash
                     if (result == DialogResult.OK)
                     {
                         // A key was entered, so read it back from the registry to make sure it was saved correctly.
-                        apiKey = checkRegistry();
+                        apiKey = CheckRegistry();
                     }
                 }
                 // After all the preliminary checks, if we have a valid API key, then configure it for use.
@@ -86,7 +86,7 @@ namespace GetFileHash
         /// </summary>
         private void DisableButtons()
         {
-            trafficLight.Image = Properties.Resources.traffic_off;
+            trafficLight.Image = Resources.traffic_off;
             vtMessageTextBox.Text = string.Empty;
             trafficLightTimer.Enabled = false;
             resultsButton.Enabled = false;
@@ -111,7 +111,7 @@ namespace GetFileHash
 
         private void FileHashForm_Load(object sender, EventArgs e)
         {
-            mruManager = new MRUManager(recentFilesToolStripMenuItem, "GetFileHash", recentFileGotClicked_handler, recentFilesGotCleared_handler);
+            mruManager = new MRUManager(recentFilesToolStripMenuItem, "GetFileHash", RecentFileGotClicked_handler, RecentFilesGotCleared_handler);
 
             try
             {
@@ -129,7 +129,7 @@ namespace GetFileHash
 
                         filePathBox.Text = fileNamePath;
                         DisableButtons();
-                        if (calculateChecksums(fileNamePath))
+                        if (CalculateChecksums(fileNamePath))
                         {
                             // Now give it to the MRUManager
                             mruManager.AddRecentFile(fileNamePath);
@@ -143,7 +143,7 @@ namespace GetFileHash
             }
         }
 
-        private void recentFileGotClicked_handler(object obj, EventArgs evt)
+        private void RecentFileGotClicked_handler(object obj, EventArgs evt)
         {
             fileNamePath = (obj as ToolStripItem).Text;
 
@@ -158,10 +158,10 @@ namespace GetFileHash
 
             filePathBox.Text = fileNamePath;
             DisableButtons();
-            calculateChecksums(fileNamePath);
+            CalculateChecksums(fileNamePath);
         }
 
-        private void recentFilesGotCleared_handler(object obj, EventArgs evt)
+        private void RecentFilesGotCleared_handler(object obj, EventArgs evt)
         {
             // Prior to this function getting called, all recent files in the registry and 
             // in the program's 'Recent Files' menu are cleared.
@@ -171,7 +171,7 @@ namespace GetFileHash
         /// Check if the API key was saved in the registry.
         /// </summary>
         /// <returns>Returns the API key.</returns>
-        private object checkRegistry()
+        private object CheckRegistry()
         {
             RegistryKey regKey = Registry.CurrentUser.OpenSubKey("Software", true);
             regKey.CreateSubKey("VirusTotal");
@@ -181,19 +181,19 @@ namespace GetFileHash
             return apiKey;
         }
 
-        private void openFileDialog_FileOk(object sender, CancelEventArgs e)
+        private void OpenFileDialog_FileOk(object sender, CancelEventArgs e)
         {
             fileNamePath = openFileDialog.FileName;
             DisableButtons();
 
-            if (calculateChecksums(fileNamePath))
+            if (CalculateChecksums(fileNamePath))
             {
                 //Now give it to the MRUManager
                 mruManager.AddRecentFile(fileNamePath);
             }
         }
 
-        private void chooseFileButton_Click(object sender, EventArgs e)
+        private void ChooseFileButton_Click(object sender, EventArgs e)
         {
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -226,18 +226,16 @@ namespace GetFileHash
             return retVal;
         }
 
-        private void exitButton_Click(object sender, EventArgs e)
+        private void ExitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripItem menuItem = sender as ToolStripItem;
-            if (menuItem != null)
+            if (sender is ToolStripItem menuItem)
             {
-                ContextMenuStrip owner = menuItem.Owner as ContextMenuStrip;
-                if (owner != null)
+                if (menuItem.Owner is ContextMenuStrip owner)
                 {
                     TextBox sourceControl = owner.SourceControl as TextBox;
                     Clipboard.SetText(sourceControl.Text);
@@ -245,13 +243,13 @@ namespace GetFileHash
             }
         }
 
-        private void filePathBox_TextChanged(object sender, EventArgs e)
+        private void FilePathBox_TextChanged(object sender, EventArgs e)
         {
             if (File.Exists(filePathBox.Text))
             {
                 fileNamePath = filePathBox.Text;
                 DisableButtons();
-                calculateChecksums(fileNamePath);
+                CalculateChecksums(fileNamePath);
             }
         }
 
@@ -260,7 +258,7 @@ namespace GetFileHash
         /// </summary>
         /// <param name="fileName">The path and file name to use.</param>
         /// <returns>Returns TRUE on success.</returns>
-        private bool calculateChecksums(string fileName)
+        private bool CalculateChecksums(string fileName)
         {
             bool success = false;
 
@@ -328,35 +326,35 @@ namespace GetFileHash
 
         bool altTick = true;
 
-        private void trafficLightTimer_Tick(object sender, EventArgs e)
+        private void TrafficLightTimer_Tick(object sender, EventArgs e)
         {
             if (altTick)
             {
                 switch (alertStatus)
                 {
                     case AlertStatus.None:
-                        trafficLight.Image = Properties.Resources.traffic_off;
+                        trafficLight.Image = Resources.traffic_off;
                         break;
                     case AlertStatus.Green:
-                        trafficLight.Image = Properties.Resources.traffic_green;
+                        trafficLight.Image = Resources.traffic_green;
                         break;
                     case AlertStatus.Yellow:
-                        trafficLight.Image = Properties.Resources.traffic_yellow;
+                        trafficLight.Image = Resources.traffic_yellow;
                         break;
                     case AlertStatus.Red:
-                        trafficLight.Image = Properties.Resources.traffic_red;
+                        trafficLight.Image = Resources.traffic_red;
                         break;
                 }
                 altTick = false;
             }
             else
             {
-                trafficLight.Image = Properties.Resources.traffic_off;
+                trafficLight.Image = Resources.traffic_off;
                 altTick = true;
             }
         }
 
-        private void resultsButton_Click(object sender, EventArgs e)
+        private void ResultsButton_Click(object sender, EventArgs e)
         {
             if (fileReport != null)
             {
@@ -379,7 +377,7 @@ namespace GetFileHash
             }
         }
 
-        private void showHistogramButton_Click(object sender, EventArgs e)
+        private void ShowHistogramButton_Click(object sender, EventArgs e)
         {
             FileAnalysis analysis = new FileAnalysis(fileNamePath);
             analysis.Show();

@@ -36,15 +36,12 @@ namespace GetFileHash
         /// </summary>
         private int _marginWidth = 20;
         private int _leftMargin = 60;
-        /// <summary>
-        /// The default colour to use.
-        /// </summary>
-        private Color _myColor = Color.Black;
+
         /// <summary>
         /// The default font to use.
         /// </summary>
         private Font _myFont = new Font("Verdana", 10);
-        private bool _hideZeroBytes = false;
+
         //private Bitmap bitmap;
         private Graphics _graphics;
 
@@ -84,31 +81,11 @@ namespace GetFileHash
 
         [Category("Histogram Options")]
         [Description("The color used within the control")]
-        public Color DisplayColor
-        {
-            set
-            {
-                _myColor = value;
-            }
-            get
-            {
-                return _myColor;
-            }
-        }
+        public Color DisplayColor { set; get; } = Color.Black;
 
         [Category("Histogram Options")]
         [Description("Ignore bytes with zero value")]
-        public bool HideZeroBytes
-        {
-            set
-            {
-                _hideZeroBytes = value;
-            }
-            get
-            {
-                return _hideZeroBytes;
-            }
-        }
+        public bool HideZeroBytes { set; get; } = false;
 
         public Histogram()
         {
@@ -121,9 +98,9 @@ namespace GetFileHash
         /// <param name="myValues">The values being drawn.</param>
         public void DrawHistogram(byte[] Values, bool hideZeroBytes)
         {
-            _hideZeroBytes = hideZeroBytes;
+            HideZeroBytes = hideZeroBytes;
 
-            if (_hideZeroBytes)
+            if (HideZeroBytes)
             {
                 _myValues = new long[255];
             }
@@ -136,12 +113,12 @@ namespace GetFileHash
             foreach (byte myByte in Values)
             {
                 // If _hideZeroBytes is true, then ignore bytes with a 0 value
-                if (_hideZeroBytes && (myByte != 0))
+                if (HideZeroBytes && (myByte != 0))
                 {
                     // Because we are ignoring zero bytes, then we need to shift the index by 1
                     _myValues[myByte - 1] += 1;
                 }
-                else if (!_hideZeroBytes)
+                else if (!HideZeroBytes)
                 {
                     _myValues[myByte] += 1;
                 }
@@ -155,10 +132,10 @@ namespace GetFileHash
             _myAverage = _myAverage / _myValues.LongLength;
 
             // Determine the largest value to display on the X axis.
-            _maxXvalue = getMaxX();
+            _maxXvalue = GetMaxX();
 
             // Determine the largest value to display on the Y axis.
-            _maxYvalue = getMaxY();
+            _maxYvalue = GetMaxY();
 
             ComputeXYUnitValues();
             Refresh();
@@ -169,7 +146,7 @@ namespace GetFileHash
         /// </summary>
         /// <param name="Vals">An array of values to parse.</param>
         /// <returns>Returns the largest non-zero X index.</returns>
-        private int getMaxX()
+        private int GetMaxX()
         {
             int retVal = _myValues.Length - 1;
 
@@ -200,7 +177,7 @@ namespace GetFileHash
         /// </summary>
         /// <param name="Vals">The array of values in which we look.</param>
         /// <returns>Returns the maximum value.</returns>
-        private long getMaxY()
+        private long GetMaxY()
         {
             long max = 0;
 
@@ -293,7 +270,7 @@ namespace GetFileHash
                     }
                     else // For all the other values
                     {
-                        Pen myPen = new Pen(new SolidBrush(_myColor), _myXUnit);
+                        Pen myPen = new Pen(new SolidBrush(DisplayColor), _myXUnit);
 
                         // Draw each line.
                         _graphics.DrawLine(myPen,
@@ -311,7 +288,7 @@ namespace GetFileHash
                 {
                     float correctedVal = tempVal;
 
-                    if (_hideZeroBytes)
+                    if (HideZeroBytes)
                     {
                         correctedVal = tempVal - 1;
                     }
@@ -321,7 +298,7 @@ namespace GetFileHash
                     float yVal = Height - _myFont.Height;
 
                     // Write the text on the X axis
-                    _graphics.DrawString(textToDisplay, _myFont, new SolidBrush(_myColor), new PointF(xVal + _myXUnit, yVal), xAxisFormat);
+                    _graphics.DrawString(textToDisplay, _myFont, new SolidBrush(DisplayColor), new PointF(xVal + _myXUnit, yVal), xAxisFormat);
 
                     // Now, draw a short tick on the X axis to show which bar the label is indicating.
                     Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
@@ -370,7 +347,7 @@ namespace GetFileHash
                     float yVal = (gridLine * _myYUnit) + _marginWidth;
 
                     // Write the text on the X axis
-                    _graphics.DrawString(labelText, _myFont, new SolidBrush(_myColor), new PointF(xVal, yVal), yAxisFormat);
+                    _graphics.DrawString(labelText, _myFont, new SolidBrush(DisplayColor), new PointF(xVal, yVal), yAxisFormat);
 
                     // Now, draw a short tick on the Y axis to show which bar the label is indicating.
                     Pen penTick = new Pen(new SolidBrush(Color.Black), (_myXUnit / 4));
