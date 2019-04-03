@@ -48,9 +48,9 @@ namespace GetFileHash
             }
 
 #if DEBUG
-            CreateShortcut("Encrypt File (Debug)", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Create an Encrypted File");
+            CreateShortcut("Get File Hash (Debug)", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Calculate File Hash");
 #else
-            CreateShortcut("Encrypt File", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Create an Encrypted File");
+            CreateShortcut("Get File Hash", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Calculate File Hash");
 #endif
 
             try
