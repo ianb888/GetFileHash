@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GetFileHash")]
-[assembly: AssemblyCopyright("Copyright © 2016 Ian Bedson")]
+[assembly: AssemblyCopyright("Copyright © 2014 Ian Bedson")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
