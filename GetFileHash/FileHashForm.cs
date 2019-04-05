@@ -4,9 +4,11 @@ using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 using GetFileHash.Properties;
+using IWshRuntimeLibrary;
 using Microsoft.Win32;
 using VirusTotalNET;
 using VirusTotalNET.Results;
@@ -44,6 +46,12 @@ namespace GetFileHash
             {
                 property.Provider = portableSettingsProvider;
             }
+
+#if DEBUG
+            CreateShortcut("Get File Hash (Debug)", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Calculate File Hash");
+#else
+            CreateShortcut("Get File Hash", Environment.GetFolderPath(Environment.SpecialFolder.SendTo), Assembly.GetExecutingAssembly().Location, "Calculate File Hash");
+#endif
 
             try
             {
@@ -147,7 +155,7 @@ namespace GetFileHash
         {
             fileNamePath = (obj as ToolStripItem).Text;
 
-            if (!File.Exists(fileNamePath))
+            if (!System.IO.File.Exists(fileNamePath))
             {
                 if (MessageBox.Show(string.Format("{0} doesn't exist. Remove from recent files?", fileNamePath), "File not found", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -213,7 +221,7 @@ namespace GetFileHash
 
             try
             {
-                using (var stream = new BufferedStream(File.OpenRead(fileName), 100000))
+                using (var stream = new BufferedStream(System.IO.File.OpenRead(fileName), 100000))
                 {
                     retVal = BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", string.Empty);
                 }
@@ -245,7 +253,7 @@ namespace GetFileHash
 
         private void FilePathBox_TextChanged(object sender, EventArgs e)
         {
-            if (File.Exists(filePathBox.Text))
+            if (System.IO.File.Exists(filePathBox.Text))
             {
                 fileNamePath = filePathBox.Text;
                 DisableButtons();
@@ -262,7 +270,7 @@ namespace GetFileHash
         {
             bool success = false;
 
-            if (File.Exists(fileName))
+            if (System.IO.File.Exists(fileName))
             {
                 string checksumMd5 = GetHashFromFile(fileName, Algorithms.MD5);
                 md5TextBox.Text = checksumMd5;
@@ -288,7 +296,7 @@ namespace GetFileHash
         {
             fileNamePath = filePathBox.Text;
 
-            if (File.Exists(fileNamePath))
+            if (System.IO.File.Exists(fileNamePath))
             {
                 FileInfo fileInfo = new FileInfo(fileNamePath);
 
@@ -381,6 +389,37 @@ namespace GetFileHash
         {
             FileAnalysis analysis = new FileAnalysis(fileNamePath);
             analysis.Show();
+        }
+
+        private static void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation, string shortcutDescription = "")
+        {
+            if (string.IsNullOrWhiteSpace(shortcutName))
+            {
+                throw new ArgumentNullException("shortcutName", "The shortcut name must be specified");
+            }
+            if (string.IsNullOrWhiteSpace(shortcutPath))
+            {
+                throw new ArgumentNullException("shortcutPath", "The shortcut path must be specified");
+            }
+            if (string.IsNullOrWhiteSpace(targetFileLocation))
+            {
+                throw new ArgumentNullException("targetFileLocation", "The target file name must be specified");
+            }
+
+            string shortcutLocation = Path.Combine(shortcutPath, shortcutName + ".lnk");
+
+            if (System.IO.File.Exists(shortcutLocation))
+            {
+                System.IO.File.Delete(shortcutLocation);
+            }
+
+            WshShell shell = new WshShell();
+            IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutLocation);
+
+            shortcut.Description = shortcutDescription;         // The description of the shortcut
+            shortcut.IconLocation = targetFileLocation + ",0";  // The icon of the shortcut
+            shortcut.TargetPath = targetFileLocation;           // The path of the file that will launch when the shortcut is run
+            shortcut.Save();                                    // Save the shortcut
         }
     }
 }

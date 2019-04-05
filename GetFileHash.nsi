@@ -70,7 +70,7 @@ VIAddVersionKey "FileVersion" "${PRODUCT_VERSION}"
 
 Name "${PRODUCT_NAME}"
 OutFile "${APPNAME}-${PRODUCT_VERSION}-Setup.exe"
-InstallDir "$PROGRAMFILES\${PRODUCT_PUBLISHER}"
+InstallDir "$PROGRAMFILES\${PRODUCT_PUBLISHER}\${APPNAME}"
 InstallDirRegKey ${PRODUCT_INST_ROOT_KEY} "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails hide
 ShowUnInstDetails show
