@@ -25,15 +25,13 @@ namespace GetFileHash
             Red
         };
 
-        private const string ScanUrl = "http://www.google.com/";
-
-        VirusTotal virusTotal;
+        readonly VirusTotal virusTotal;
         MRUManager mruManager;
         FileReport fileReport;
         AlertStatus alertStatus = AlertStatus.None;
 
+        private readonly bool apiAvailable = false;
         private string fileNamePath = string.Empty;
-        private bool apiAvailable = false;
 
         public FileHashForm()
         {
@@ -268,7 +266,7 @@ namespace GetFileHash
         /// <returns>Returns TRUE on success.</returns>
         private bool CalculateChecksums(string fileName)
         {
-            bool success = false;
+            bool success;
 
             if (System.IO.File.Exists(fileName))
             {

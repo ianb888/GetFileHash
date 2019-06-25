@@ -40,7 +40,7 @@ namespace GetFileHash
         /// <summary>
         /// The default font to use.
         /// </summary>
-        private Font _myFont = new Font("Verdana", 10);
+        private readonly Font _myFont = new Font("Verdana", 10);
 
         //private Bitmap bitmap;
         private Graphics _graphics;
@@ -129,7 +129,7 @@ namespace GetFileHash
             {
                 _myAverage += total;
             }
-            _myAverage = _myAverage / _myValues.LongLength;
+            _myAverage /= _myValues.LongLength;
 
             // Determine the largest value to display on the X axis.
             _maxXvalue = GetMaxX();
@@ -279,9 +279,11 @@ namespace GetFileHash
                     }
                 }
 
-                StringFormat xAxisFormat = new StringFormat();
-                xAxisFormat.Alignment = StringAlignment.Center;
-                xAxisFormat.LineAlignment = StringAlignment.Near;
+                StringFormat xAxisFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Center,
+                    LineAlignment = StringAlignment.Near
+                };
 
                 // Now draw the X axis labels
                 foreach (float tempVal in xLabelsList)
@@ -321,9 +323,11 @@ namespace GetFileHash
                 horizGridList.Add(_maxYvalue / 8 * 1);
                 horizGridList.Add((float)0);
 
-                StringFormat yAxisFormat = new StringFormat();
-                yAxisFormat.Alignment = StringAlignment.Near;
-                yAxisFormat.LineAlignment = StringAlignment.Center;
+                StringFormat yAxisFormat = new StringFormat
+                {
+                    Alignment = StringAlignment.Near,
+                    LineAlignment = StringAlignment.Center
+                };
 
                 // Now draw the horizontal grid lines
                 for (int iteration = 0; iteration < horizGridList.Count; iteration++)
@@ -359,8 +363,10 @@ namespace GetFileHash
                 }
 
                 // Now draw a line to show the average value
-                Pen averagePen = new Pen(new SolidBrush(Color.Green), (_myXUnit / 4));
-                averagePen.DashStyle = DashStyle.DashDot;
+                Pen averagePen = new Pen(new SolidBrush(Color.Green), (_myXUnit / 4))
+                {
+                    DashStyle = DashStyle.DashDot
+                };
                 _graphics.DrawLine(averagePen,
                     new PointF(_marginWidth + _leftMargin, (_myAverage * _myYUnit) + _marginWidth),
                     new PointF(_marginWidth + (_maxXvalue * _myXUnit) + _myXUnit + _leftMargin, (_myAverage * _myYUnit) + _marginWidth));

@@ -6,7 +6,7 @@ namespace GetFileHash
 {
     public partial class VtApiForm : Form
     {
-        string vtApiKey = string.Empty;
+        readonly string vtApiKey = string.Empty;
 
         public VtApiForm()
         {

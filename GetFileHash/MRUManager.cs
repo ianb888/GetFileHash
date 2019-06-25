@@ -11,7 +11,7 @@ namespace GetFileHash
         private readonly string SubKeyName;
         private readonly Action<object, EventArgs> OnRecentFileClick;
         private readonly Action<object, EventArgs> OnClearRecentFilesClick;
-        private ToolStripMenuItem ParentMenuItem;
+        private readonly ToolStripMenuItem ParentMenuItem;
         #endregion
 
         /// <summary>
@@ -35,11 +35,11 @@ namespace GetFileHash
             OnClearRecentFilesClick = onClearRecentFilesClick;
             SubKeyName = string.Format("Software\\{0}\\MRU", NameOfProgram);
 
-            _refreshRecentFilesMenu();
+            RefreshRecentFilesMenu();
         }
 
         #region Private members
-        private void _onClearRecentFiles_Click(object obj, EventArgs evt)
+        private void OnClearRecentFiles_Click(object obj, EventArgs evt)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace GetFileHash
             OnClearRecentFilesClick?.Invoke(obj, evt);
         }
 
-        private void _refreshRecentFilesMenu()
+        private void RefreshRecentFilesMenu()
         {
             RegistryKey rK;
             string s;
@@ -107,7 +107,7 @@ namespace GetFileHash
 
             ParentMenuItem.DropDownItems.Add("-");
             tSI = ParentMenuItem.DropDownItems.Add("Clear list");
-            tSI.Click += new EventHandler(_onClearRecentFiles_Click);
+            tSI.Click += new EventHandler(OnClearRecentFiles_Click);
             ParentMenuItem.Enabled = true;
         }
         #endregion
@@ -140,7 +140,7 @@ namespace GetFileHash
             {
                 Console.Error.WriteLine(ex.ToString());
             }
-            _refreshRecentFilesMenu();
+            RefreshRecentFilesMenu();
         }
 
         public void RemoveRecentFile(string fileNameWithFullPath)
@@ -154,7 +154,7 @@ namespace GetFileHash
                     if ((rK.GetValue(valueName, null) as string) == fileNameWithFullPath)
                     {
                         rK.DeleteValue(valueName, true);
-                        _refreshRecentFilesMenu();
+                        RefreshRecentFilesMenu();
                         break;
                     }
                 }
@@ -163,7 +163,7 @@ namespace GetFileHash
             {
                 Console.Error.WriteLine(ex.ToString());
             }
-            _refreshRecentFilesMenu();
+            RefreshRecentFilesMenu();
         }
         #endregion
     }
