@@ -324,8 +324,17 @@ namespace GetFileHash
                 }
                 else
                 {
-                    ScanResult scanResult = await virusTotal.ScanFileAsync(fileInfo);
-                    vtMessageTextBox.Text = scanResult.VerboseMsg;
+                    DialogResult result = MessageBox.Show("Do you want to upload this file to VirusTotal?", "Upload Unknown File?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        ScanResult scanResult = await virusTotal.ScanFileAsync(fileInfo);
+                        vtMessageTextBox.Text = scanResult.VerboseMsg;
+                    }
+                    else
+                    {
+                        vtMessageTextBox.Text = "This file is unknown on VirusTotal and has not been assessed before.";
+                    }
                 }
             }
         }
