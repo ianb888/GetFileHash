@@ -24,10 +24,12 @@ namespace GetFileHash
                     apiBox.Text = vtApiKey;
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception eX)
             {
                 MessageBox.Show(eX.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         private void OkButton_Click(object sender, EventArgs e)
@@ -50,10 +52,12 @@ namespace GetFileHash
             {
                 Registry.SetValue("HKEY_CURRENT_USER\\Software\\VirusTotal", "APIkey", keyVal);
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception eX)
             {
                 MessageBox.Show(eX.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 }

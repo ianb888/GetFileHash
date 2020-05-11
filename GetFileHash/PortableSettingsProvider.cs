@@ -161,6 +161,7 @@ namespace GetFileHash
                     Directory.CreateDirectory(configDirectoryName);
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
                 // Create an informational message for the user if we cannot save the settings.
@@ -172,6 +173,7 @@ namespace GetFileHash
                 // Uncomment the following line to enable a console message for console-based apps
                 //Console.Error.WriteLine("The process failed:\n" + e.Message);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
             //return new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).DirectoryName;
             return configDirectoryName;
         }
@@ -220,6 +222,7 @@ namespace GetFileHash
             {
                 XMLConfig.Save(Path.Combine(GetAppPath(), GetSettingsFilename()));
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 // Create an informational message for the user if we cannot save the settings.
@@ -231,6 +234,7 @@ namespace GetFileHash
                 // Uncomment the following line to enable a console message for console-based apps
                 Console.Error.WriteLine("Error writing configuration file to disk: " + ex.Message);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         private XmlDocument XMLConfig
@@ -249,6 +253,7 @@ namespace GetFileHash
                     }
 
                     // If the file does not exist on disk, catch the exception then create the XML template for the file.
+#pragma warning disable CA1031 // Do not catch general exception types
                     catch (Exception)
                     {
                         // XML Declaration
@@ -290,6 +295,7 @@ namespace GetFileHash
                         XmlElement appNode = xmlDoc.CreateElement(APPNODE);
                         userNode.AppendChild(appNode);
                     }
+#pragma warning restore CA1031 // Do not catch general exception types
                 }
                 return xmlDoc;
             }
@@ -331,6 +337,7 @@ namespace GetFileHash
                     }
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception)
             {
                 // Check to see if a default value is defined by the application.
@@ -364,6 +371,7 @@ namespace GetFileHash
                     retVal = "";
                 }
             }
+#pragma warning restore CA1031 // Do not catch general exception types
             return retVal;
         }
 
@@ -378,10 +386,12 @@ namespace GetFileHash
                 // If it exists, return its first child node, (the <value>data here</value> node)
                 SettingNode = XMLConfig.SelectSingleNode("//setting[@name='" + setProp.Name + "']").FirstChild;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception)
             {
                 SettingNode = null;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             // If we have a pointer to an actual XML node, update the value stored there
             if ((SettingNode != null))

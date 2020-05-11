@@ -57,10 +57,12 @@ namespace GetFileHash
                 ParentMenuItem.DropDownItems.Clear();
                 ParentMenuItem.Enabled = false;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.ToString());
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             OnClearRecentFilesClick?.Invoke(obj, evt);
         }
@@ -80,11 +82,13 @@ namespace GetFileHash
                     return;
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 Console.Error.WriteLine("Cannot open recent files registry key:\n" + ex.ToString());
                 return;
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             ParentMenuItem.DropDownItems.Clear();
             string[] valueNames = rK.GetValueNames();
@@ -136,10 +140,12 @@ namespace GetFileHash
                     }
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.ToString());
             }
+#pragma warning restore CA1031 // Do not catch general exception types
             RefreshRecentFilesMenu();
         }
 
@@ -159,10 +165,12 @@ namespace GetFileHash
                     }
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.ToString());
             }
+#pragma warning restore CA1031 // Do not catch general exception types
             RefreshRecentFilesMenu();
         }
         #endregion

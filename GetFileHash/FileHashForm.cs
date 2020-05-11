@@ -81,10 +81,12 @@ namespace GetFileHash
                     apiAvailable = false;
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception eX)
             {
                 MessageBox.Show(eX.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         /// <summary>
@@ -143,10 +145,12 @@ namespace GetFileHash
                     }
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch
             {
 
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         private void RecentFileGotClicked_handler(object obj, EventArgs evt)
@@ -224,10 +228,12 @@ namespace GetFileHash
                     retVal = BitConverter.ToString(algorithm.ComputeHash(stream)).Replace("-", string.Empty);
                 }
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception eX)
             {
                 MessageBox.Show(eX.GetType().ToString() + ": " + eX.Message, eX.GetType().ToString(), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
 
             return retVal;
         }
@@ -402,15 +408,15 @@ namespace GetFileHash
         {
             if (string.IsNullOrWhiteSpace(shortcutName))
             {
-                throw new ArgumentNullException("shortcutName", "The shortcut name must be specified");
+                throw new ArgumentNullException(nameof(shortcutName), "The shortcut name must be specified");
             }
             if (string.IsNullOrWhiteSpace(shortcutPath))
             {
-                throw new ArgumentNullException("shortcutPath", "The shortcut path must be specified");
+                throw new ArgumentNullException(nameof(shortcutPath), "The shortcut path must be specified");
             }
             if (string.IsNullOrWhiteSpace(targetFileLocation))
             {
-                throw new ArgumentNullException("targetFileLocation", "The target file name must be specified");
+                throw new ArgumentNullException(nameof(targetFileLocation), "The target file name must be specified");
             }
 
             string shortcutLocation = Path.Combine(shortcutPath, shortcutName + ".lnk");
