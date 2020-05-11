@@ -76,9 +76,9 @@ ShowInstDetails hide
 ShowUnInstDetails show
 BrandingText "${PRODUCT_PUBLISHER_FULL}"
 
-!system '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 6171a510727f044a716473f3a3e0482a459cd8d3 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe"'
+!system '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 2c6255575e0612105fb7e8f6602c2cdb4c3b7955 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "${PROJECT_HOME}\${APPNAME}\bin\Release\${APPNAME}.exe"'
 
-!finalize '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 6171a510727f044a716473f3a3e0482a459cd8d3 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "%1"'
+!finalize '"C:\Program Files (x86)\Microsoft SDKs\ClickOnce\SignTool\signtool" sign /v /sha1 2c6255575e0612105fb7e8f6602c2cdb4c3b7955 /n "Veolia Environmental Services" /fd sha1 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 "%1"'
 
 RequestExecutionLevel admin
 
